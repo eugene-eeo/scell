@@ -24,12 +24,13 @@ class Plug(object):
         rl, wl = set(rl), set(wl)
 
         for fp in self.fps:
-            item = self.fps[fp]
-            if item not in rl and item not in wl:
-                continue
-            item.readable = fp in rl
-            item.writable = fp in wl
-            yield item
+            r = fp in rl
+            w = fp in wl
+            if r or w:
+                item = self.fps[fp]
+                item.readable = r
+                item.writable = w
+                yield item
 
     def info(self, fp):
         return self.fps[fp]
