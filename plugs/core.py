@@ -1,22 +1,23 @@
 from select import select as _select
-from collections import namedtuple
 
 
-SelectResult = namedtuple('SelectResult', ('readers', 'writers'))
-SelectInfo = namedtuple('SelectInfo', ('obj', 'read', 'write'))
+def select(rl, wl, timeout):
+    rlist, wlist, _ = _select(rl, wl, (), timeout)
+    return rlist, wlist
 
 
-def mode_of(info):
-    return ''.join((
-        'r' if info.read else '',
-        'w' if info.write else '',
-    ))
+class Monitored(object):
+    readable = False
+    writable = False
 
+    def __init__(self, fp, mode):
+        self.fp = fp
+        self.wants_read = 'r' in mode
+        self.wants_write = 'w' in mode
 
-def select(rl, wl):
-    r, w, _ = _select(rl, wl, ())
-    return SelectResult(r, w)
-
-
-def parse(mode):
-    return 'r' in mode, 'w' in mode
+    @property
+    def mode(self):
+        return ''.join((
+            'r' if self.wants_read else '',
+            'w' if self.wants_write else '',
+        ))

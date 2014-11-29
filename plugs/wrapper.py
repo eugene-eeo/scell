@@ -1,32 +1,39 @@
-from plugs.core import SelectInfo, mode_of, select, parse
+from plugs.core import select, parse_mode, Monitored
 
 
 class Plug(object):
     def __init__(self):
-        self.rlist = []
-        self.wlist = []
+        self.fps = {}
 
-    def register(self, fp, mode='r'):
-        for item in self.parse(mode):
-            item.append(fp)
+    def register(self, fp, mode):
+        self.fps[fp] = Monitored(fp, mode)
 
-    def remove(self, fp, mode=None):
-        for item in self.parse(mode or mode_of(self.info(fp))):
-            item.remove(fp)
+    def unregsiter(self, fp):
+        del self.fps[fp]
 
-    def wait(self):
-        return select(self.rlist, self.wlist)
+    @property
+    def rlist(self):
+        return [fp for fp in self.fps if self.fps[fp].wants_read]
+
+    @property
+    def wlist(self):
+        return [fp for fp in self.fps if self.fps[fp].wants_write]
+
+    def select(self, timeout=None):
+        rl, wl = select(self.rlist, self.wlist, timeout)
+        yielded = set()
+
+        for fp in rl:
+            mon = self.info(fp)
+            mon.readable = True
+            yield mon
+            yielded.add(mon)
+
+        for fp in wl:
+            mon = self.info(wp)
+            mon.writable = True
+            if mon not in yielded:
+                yield mon
 
     def info(self, fp):
-        return SelectInfo(
-            obj=fp,
-            read=fp in self.rlist,
-            write=fp in self.wlist,
-        )
-
-    def parse(self, mode):
-        read, write = parse(mode)
-        if read:
-            yield self.rlist
-        if write:
-            yield self.wlist
+        return self.fps[fp]

@@ -11,4 +11,6 @@ plug = Plug()
 
 plug.register(conn, mode='rw')
 plug.register(fp, mode='r')
+
+plug.select()
 ```
