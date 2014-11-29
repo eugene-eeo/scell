@@ -16,3 +16,7 @@ def mode_of(info):
 def select(rl, wl):
     r, w, _ = _select(rl, wl, ())
     return SelectResult(r, w)
+
+
+def parse(mode):
+    return 'r' in mode, 'w' in mode

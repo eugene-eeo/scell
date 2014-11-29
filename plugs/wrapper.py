@@ -1,4 +1,4 @@
-from plugs.core import SelectInfo, mode_of, select
+from plugs.core import SelectInfo, mode_of, select, parse
 
 
 class Plug(object):
@@ -25,8 +25,8 @@ class Plug(object):
         )
 
     def parse(self, mode):
-        for item in set(mode):
-            if item == 'r':
-                yield self.rlist
-            elif item == 'w':
-                yield self.wlist
+        read, write = parse(mode)
+        if read:
+            yield self.rlist
+        if write:
+            yield self.wlist
