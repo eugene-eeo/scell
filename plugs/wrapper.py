@@ -21,19 +21,15 @@ class Plug(object):
 
     def select(self, timeout=None):
         rl, wl = select(self.rlist, self.wlist, timeout)
-        yielded = set()
+        rl, wl = set(rl), set(wl)
 
-        for fp in rl:
-            mon = self.info(fp)
-            mon.readable = True
-            yield mon
-            yielded.add(mon)
-
-        for fp in wl:
-            mon = self.info(wp)
-            mon.writable = True
-            if mon not in yielded:
-                yield mon
+        for fp in self.fps:
+            item = self.fps[fp]
+            if item not in rl and item not in wl:
+                continue
+            item.readable = fp in rl
+            item.writable = fp in wl
+            yield item
 
     def info(self, fp):
         return self.fps[fp]
