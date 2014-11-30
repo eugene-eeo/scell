@@ -1,9 +1,9 @@
 """
     plugs
     ~~~~~
-    Plugs is a library that implements a Plug object,
-    which is a simple, stateful wrapper around the
-    lower-level ``select.select`` function.
+
+    Library providing a simple, stateful wrapper
+    around the low-level ``~select.select`` API.
 
     :copyright: (c) 2014 Eugene Eeo
     :license: MIT, see LICENSE for details.
