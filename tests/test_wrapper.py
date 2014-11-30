@@ -10,7 +10,7 @@ def plug(request, tmpdir):
     ]
     p = Plug()
     for path in paths:
-        path.write('')
+        path.write('abc')
         p.register(open(str(path)), mode='r')
     return p
 
@@ -34,3 +34,12 @@ def test_unregister(plug):
     assert not list(plug.select(0))
     assert not list(plug.select())
     assert not plug.rlist
+
+
+def test_callbacks(plug):
+    for mon in plug.fps.values():
+        mon.callback = lambda m=mon: m.fp.seek(1)
+
+    for mon in plug.select():
+        mon.callback()
+        assert mon.fp.tell() == 1
