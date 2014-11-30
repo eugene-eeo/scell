@@ -1,4 +1,4 @@
-from plugs.core import select, parse_mode, Monitored
+from plugs.core import select, Monitored
 
 
 class Plug(object):
@@ -8,7 +8,7 @@ class Plug(object):
     def register(self, fp, mode):
         self.fps[fp] = Monitored(fp, mode)
 
-    def unregsiter(self, fp):
+    def unregister(self, fp):
         del self.fps[fp]
 
     @property
@@ -27,10 +27,10 @@ class Plug(object):
             r = fp in rl
             w = fp in wl
             if r or w:
-                item = self.fps[fp]
-                item.readable = r
-                item.writable = w
-                yield item
+                mon = self.fps[fp]
+                mon.readable = r
+                mon.writable = w
+                yield mon
 
     def info(self, fp):
         return self.fps[fp]
