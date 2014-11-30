@@ -49,7 +49,7 @@ class Plug(object):
         Returns a list of file-like objects which are
         interested in readability.
         """
-        return [fp for fp, m in self.fps.items() if m.wants_read]
+        return [fp for fp in self.fps if self.fps[fp].wants_read]
 
     @property
     def wlist(self):
@@ -57,7 +57,7 @@ class Plug(object):
         Returns a list of file-like objects which are
         interested in writability.
         """
-        return [fp for fp, m in self.fps.items() if m.wants_write]
+        return [fp for fp in self.fps if self.fps[fp].wants_write]
 
     def select(self, timeout=None):
         """
