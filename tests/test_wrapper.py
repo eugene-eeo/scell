@@ -32,4 +32,5 @@ def test_unregister(plug):
         plug.unregister(item)
 
     assert not list(plug.select(0))
+    assert not list(plug.select())
     assert not plug.rlist

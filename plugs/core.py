@@ -2,6 +2,8 @@ from select import select as _select
 
 
 def select(rl, wl, timeout):
+    if not (rl or wl):
+        return [], []
     rlist, wlist, _ = _select(rl, wl, (), timeout)
     return rlist, wlist
 
