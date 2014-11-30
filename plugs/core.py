@@ -55,3 +55,12 @@ class Monitored(object):
             'r' if self.wants_read else '',
             'w' if self.wants_write else '',
         ))
+
+    @staticmethod
+    def callback():
+        """
+        A static method that can be overriden to
+        effectively implement callbacks that can
+        be triggered after the object is ready.
+        """
+        return
