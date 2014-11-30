@@ -13,11 +13,11 @@ class Plug(object):
 
     @property
     def rlist(self):
-        return [fp for fp in self.fps if self.fps[fp].wants_read]
+        return [fp for fp, m in self.fps.items() if m.wants_read]
 
     @property
     def wlist(self):
-        return [fp for fp in self.fps if self.fps[fp].wants_write]
+        return [fp for fp, m in self.fps.items() if m.wants_write]
 
     def select(self, timeout=None):
         rl, wl = select(self.rlist, self.wlist, timeout)
