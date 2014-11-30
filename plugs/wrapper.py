@@ -75,13 +75,13 @@ class Plug(object):
         rl, wl = set(rl), set(wl)
 
         for fp in (rl ^ wl):
+            mon = self.info(fp)
             r = fp in rl
             w = fp in wl
-            if r or w:
-                mon = self.info(fp)
-                mon.readable = r
-                mon.writable = w
-                yield mon
+
+            mon.readable = r
+            mon.writable = w
+            yield mon
 
     def info(self, fp):
         """
