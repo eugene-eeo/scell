@@ -73,13 +73,16 @@ class Plug(object):
         """
         rl, wl = select(self.rlist, self.wlist, timeout)
         rl, wl = set(rl), set(wl)
+        result = []
 
         for fp, mon in self.fps.items():
             mon.readable = fp in rl
             mon.writable = fp in wl
 
             if mon.readable or mon.writable:
-                yield mon
+                result.append(mon)
+
+        return result
 
     def info(self, fp):
         """
