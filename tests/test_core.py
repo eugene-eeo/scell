@@ -25,3 +25,5 @@ def test_monitored():
 
     m.wants_read = False
     assert m.mode == 'w'
+
+    m.callback()
