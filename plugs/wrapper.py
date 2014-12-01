@@ -64,7 +64,7 @@ class Plug(object):
         Performs a ``~select.select`` call and waits
         for *timeout* seconds, or blocks (forever) if
         *timeout* is not specified. Yields monitored
-        objects to the caller.
+        objects which are ready.
 
         :param timeout: Maximum number of seconds to
             wait. It can be any value but to block for
