@@ -74,14 +74,13 @@ class Plug(object):
         rl, wl = select(self.rlist, self.wlist, timeout)
         rl, wl = set(rl), set(wl)
 
-        for fp in (rl ^ wl):
+        for fp in self.fps:
             mon = self.info(fp)
-            r = fp in rl
-            w = fp in wl
+            mon.readable = fp in rl
+            mon.writable = fp in wl
 
-            mon.readable = r
-            mon.writable = w
-            yield mon
+            if mon.readable or mon.writable:
+                yield mon
 
     def info(self, fp):
         """
