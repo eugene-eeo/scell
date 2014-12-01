@@ -39,7 +39,7 @@ of without having to deal with some of the lower level
 details.
 
 
-.. _gevent: https://gevent.org
+.. _gevent: http://gevent.org
 .. _twisted: https://twistedmatrix.com/trac/
 
 
