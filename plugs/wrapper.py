@@ -74,8 +74,7 @@ class Plug(object):
         rl, wl = select(self.rlist, self.wlist, timeout)
         rl, wl = set(rl), set(wl)
 
-        for fp in self.fps:
-            mon = self.info(fp)
+        for fp, mon in self.fps.items():
             mon.readable = fp in rl
             mon.writable = fp in wl
 
