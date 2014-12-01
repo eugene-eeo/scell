@@ -27,8 +27,20 @@ Usage
     from plugs import Plug
     selector = Plug()
 
-    selector.register(open(PATH))
+    selector.register(open(PATH), mode='r')
     selector.select()
+
+Note that Plugs is **NOT** an event framework. If you
+want to use a framework you are much better off with
+the excellent gevent_ or twisted_ frameworks. Plugs
+just aims to provide a very minimal API on which
+implementers can write libraries or frameworks on top
+of without having to deal with some of the lower level
+details.
+
+
+.. _gevent: https://gevent.org
+.. _twisted: https://twistedmatrix.com/trac/
 
 
 License
