@@ -63,4 +63,4 @@ class Monitored(object):
         effectively implement callbacks that can
         be triggered after the object is ready.
         """
-        return
+        pass
