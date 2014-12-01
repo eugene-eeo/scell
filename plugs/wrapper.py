@@ -2,8 +2,8 @@
     plugs.wrapper
     ~~~~~~~~~~~~~
 
-    Implements the ``Plug`` class, which is a high
-    level wrapper around select.
+    Implements the ``Plug`` class, a high level wrapper
+    around ``~select.select``.
 """
 
 
