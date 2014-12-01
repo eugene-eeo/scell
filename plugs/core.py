@@ -2,7 +2,8 @@
     plugs.core
     ~~~~~~~~~~
 
-    Provides abstractions over the lower level APIs.
+    Provides abstractions over lower level APIs and
+    file objects and their interests.
 """
 
 
