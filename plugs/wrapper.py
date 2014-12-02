@@ -63,8 +63,8 @@ class Plug(object):
         """
         Performs a ``~select.select`` call and waits
         for *timeout* seconds, or blocks (forever) if
-        *timeout* is not specified. Yields monitored
-        objects which are ready.
+        *timeout* is not specified. Returns a list of
+        readable/writable monitors.
 
         :param timeout: Maximum number of seconds to
             wait. It can be any value but to block for
