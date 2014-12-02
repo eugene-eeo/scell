@@ -1,45 +1,45 @@
 from pytest import fixture
-from plugs.wrapper import Plug
+from scell.wrapper import Selector
 
 
 @fixture
-def plug(request, tmpdir):
+def selector(request, tmpdir):
     paths = [
         tmpdir.join('hello.txt'),
         tmpdir.join('jello.txt'),
     ]
-    p = Plug()
+    p = Selector()
     for path in paths:
         path.write('abc')
         p.register(open(str(path)), mode='r')
     return p
 
 
-def test_select(plug):
-    for monitor in plug.select():
+def test_select(selector):
+    for monitor in selector.select():
         assert monitor.readable
         assert monitor.wants_read
 
 
-def test_info(plug):
-    for item in plug.rlist:
-        assert plug.info(item).wants_read
-        assert plug.info(item).mode == 'r'
+def test_info(selector):
+    for item in selector.rlist:
+        assert selector.info(item).wants_read
+        assert selector.info(item).mode == 'r'
 
 
-def test_unregister(plug):
-    for item in plug.rlist:
-        plug.unregister(item)
+def test_unregister(selector):
+    for item in selector.rlist:
+        selector.unregister(item)
 
-    assert not list(plug.select(0))
-    assert not list(plug.select())
-    assert not plug.rlist
+    assert not list(selector.select(0))
+    assert not list(selector.select())
+    assert not selector.rlist
 
 
-def test_callbacks(plug):
-    for mon in plug.fps.values():
+def test_callbacks(selector):
+    for mon in selector.fps.values():
         mon.callback = lambda m=mon: m.fp.seek(1)
 
-    for mon in plug.select():
+    for mon in selector.select():
         mon.callback()
         assert mon.fp.tell() == 1

@@ -1,4 +1,4 @@
-from plugs.core import Monitored, select
+from scell.core import Monitored, select
 
 
 def test_select(tmpdir):
