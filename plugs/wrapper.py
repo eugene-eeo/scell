@@ -67,9 +67,9 @@ class Plug(object):
         readable/writable monitors.
 
         :param timeout: Maximum number of seconds to
-            wait. It can be any value but to block for
-            an indefinite time, use ``None`` or
-            for immediate, use ``0``.
+            wait. To block for an indefinite time, use
+            ``None`` or to select the monitors which
+            are ready, use ``0``.
         """
         rl, wl = select(self.rlist, self.wlist, timeout)
         rl, wl = set(rl), set(wl)
