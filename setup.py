@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 setup(
-    name='leafman',
+    name='plugs',
     version='0.0.1',
     description='simple wrapper atop select',
     license='MIT',

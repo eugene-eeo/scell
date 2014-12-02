@@ -8,15 +8,15 @@ humble **select.select** function. Using it is very simple,
 but requires you to pass in lists of file handles again and
 again. Keeping track of these file handles are tricky. Let
 Plugs handle it for you and you can focus on building an
-awesome library/server.::
+awesome library/server::
 
     >>> selector = plugs.Plug()
     >>> monitor = selector.register(open('file.txt'), mode='r')
     >>> monitor.callback = lambda: 1
-    >>> r = selector.select()
+    >>> ready = selector.select()
     >>> monitor.readable
     True
-    >>> [m.callback() for m in r]
+    >>> [m.callback() for m in ready]
     [1]
 
 Plugs allows implementors to effortlessly build libraries
@@ -28,6 +28,7 @@ Features
 --------
 
 - Stateful wrapper around **select.select**
-- Extremely small API with small footprint
+- Extremely small API with small footprint and 100% coverage
+- Core abstractions and utilities can be used directly
 - Efficient implementation of callbacks
-- Core abstractions can be used directly
+- Highly documented codebase
