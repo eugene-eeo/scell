@@ -1,5 +1,5 @@
 """
-    plugs.core
+    scell.core
     ~~~~~~~~~~
 
     Provides abstractions over lower level APIs and
@@ -29,7 +29,7 @@ def select(rl, wl, timeout):
 class Monitored(object):
     """
     Represents the interests of a file handle, and
-    it's results from a ``~plugs.core.select`` call.
+    it's results from a ``~scell.core.select`` call.
 
     :param fp: The file-like object.
     :param mode: Either 'r', 'w' or 'rw', symbolising

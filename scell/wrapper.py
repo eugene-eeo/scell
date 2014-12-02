@@ -1,19 +1,20 @@
 """
-    plugs.wrapper
+    scell.wrapper
     ~~~~~~~~~~~~~
 
-    Implements the ``Plug`` class, a high level wrapper
-    around ``~select.select``.
+    Implements the ``Selector`` class, a high level
+    wrapper around ``~select.select``.
 """
 
 
-from plugs.core import select, Monitored
+from scell.core import select, Monitored
 
 
-class Plug(object):
+class Selector(object):
     """
-    A plug object maintains a dictionary of file-like
-    objects to ``~plugs.core.Monitored`` objects.
+    A selector object maintains a dictionary of
+    file-like objects to ``~scell.core.Monitored``
+    objects.
     """
 
     def __init__(self):
@@ -36,7 +37,7 @@ class Plug(object):
     def unregister(self, fp):
         """
         Removes *fp* from the internal dictionary of
-        file handles to ``~plugs.core.Monitored``
+        file handles to ``~scell.core.Monitored``
         objects.
 
         :param fp: The file-like object.
@@ -86,7 +87,7 @@ class Plug(object):
 
     def info(self, fp):
         """
-        Get the ``~plugs.core.Monitored`` object for
+        Get the ``~scell.core.Monitored`` object for
         a given file-like object *fp*.
 
         :param fp: A file-like object that was already

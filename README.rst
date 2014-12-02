@@ -1,16 +1,16 @@
-Plugs: Selectors for Humans
+Scell: Selectors for Humans
 ===========================
 
-Plugs is a MIT-licensed selector library, written in Python.
+Scell is a MIT-licensed selector library, written in Python.
 
 At the heart of event-driven platforms is the selector, the
 humble **select.select** function. Using it is very simple,
 but requires you to pass in lists of file handles again and
 again. Keeping track of these file handles are tricky. Let
-Plugs handle it for you and you can focus on building an
-awesome library/server::
+Scell handle it for you and focus on building an awesome
+library/server::
 
-    >>> selector = plugs.Plug()
+    >>> selector = scell.Selector()
     >>> monitor = selector.register(open('file.txt'), mode='r')
     >>> monitor.callback = lambda: 1
     >>> ready = selector.select()
@@ -19,7 +19,7 @@ awesome library/server::
     >>> [m.callback() for m in ready]
     [1]
 
-Plugs allows implementors to effortlessly build libraries
+Scell allows implementors to effortlessly build libraries
 atop of the minimal abstraction provided, while also having
 good performance. The API is very small and works across
 many platforms, including Windows and OSX.

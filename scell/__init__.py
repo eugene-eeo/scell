@@ -1,5 +1,5 @@
 """
-    plugs
+    scell
     ~~~~~
 
     Library providing a simple, stateful wrapper
@@ -10,4 +10,4 @@
 """
 
 
-from plugs.wrapper import Plug
+from scell.wrapper import Selector
