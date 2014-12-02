@@ -24,6 +24,7 @@ atop of the minimal abstraction provided, while also having
 good performance. The API is very small and works across
 many platforms, including Windows and OSX.
 
+
 Features
 --------
 
@@ -32,3 +33,11 @@ Features
 - Core abstractions and utilities can be used directly
 - Efficient implementation of callbacks
 - Highly documented codebase
+
+
+Installation
+------------
+
+To install Scell, simply::
+
+    $ pip install scell
