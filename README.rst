@@ -1,6 +1,8 @@
 Scell: Selectors for Humans
 ===========================
 
+|Build| |Version|
+
 Scell is a MIT-licensed selector library, written in Python.
 
 At the heart of event-driven platforms is the selector, the
@@ -41,3 +43,8 @@ Installation
 To install Scell, simply::
 
     $ pip install scell
+
+.. |Build| image:: http://img.shields.io/travis/eugene-eeo/scell.svg
+   :target: https://travis-ci.org/eugene-eeo/scell
+.. |Version| image:: http://img.shields.io/pypi/v/scell.svg
+   :target: https://pypi.python.org/pypi/scell
