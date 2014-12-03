@@ -46,6 +46,11 @@ class Selector(object):
 
     @property
     def registered(self):
+        """
+        Returns an iterable of file-object to monitor
+        pairs that are registered on the current
+        Selector object.
+        """
         for fp in self.fps:
             yield fp, self.fps[fp]
 
