@@ -43,6 +43,16 @@ class Selector(object):
         """
         del self.fps[fp]
 
+    def info(self, fp):
+        """
+        Returns the monitor object for a registered
+        file-like object *fp*.
+
+        :param fp: A file-like object that was already
+            registered.
+        """
+        return self.fps[fp]
+
     @property
     def registered(self):
         """
@@ -93,13 +103,3 @@ class Selector(object):
                 result.append(mon)
 
         return result
-
-    def info(self, fp):
-        """
-        Returns the monitor object for a registered
-        file-like object *fp*.
-
-        :param fp: A file-like object that was already
-            registered.
-        """
-        return self.fps[fp]
