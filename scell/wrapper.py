@@ -24,7 +24,7 @@ class Selector(object):
         """
         Register a given *fp* (file handle) under a
         given *mode*. The *mode* can either be ``r``,
-        ``w``, or both.
+        ``w``, or both. Returns the monitor object.
 
         :param fp: The file-like object.
         :param mode: Whether read and or write-ready
@@ -37,8 +37,7 @@ class Selector(object):
     def unregister(self, fp):
         """
         Removes *fp* from the internal dictionary of
-        file handles to ``~scell.core.Monitored``
-        objects.
+        file handles to monitor objects.
 
         :param fp: The file-like object.
         """
@@ -97,8 +96,8 @@ class Selector(object):
 
     def info(self, fp):
         """
-        Get the ``~scell.core.Monitored`` object for
-        a given file-like object *fp*.
+        Returns the monitor object for a registered
+        file-like object *fp*.
 
         :param fp: A file-like object that was already
             registered.
