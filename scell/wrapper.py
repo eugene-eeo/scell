@@ -50,7 +50,7 @@ class Selector(object):
         Returns a list of file-like objects which are
         interested in readability.
         """
-        return [fp for fp in self.fps if self.fps[fp].wants_read]
+        return [m.fp for m in self.fps.values() if m.wants_read]
 
     @property
     def wlist(self):
@@ -58,7 +58,7 @@ class Selector(object):
         Returns a list of file-like objects which are
         interested in writability.
         """
-        return [fp for fp in self.fps if self.fps[fp].wants_write]
+        return [m.fp for m in self.fps.values() if m.wants_write]
 
     def select(self, timeout=None):
         """
