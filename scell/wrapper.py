@@ -60,7 +60,7 @@ class Selector(object):
         Returns a list of file-like objects which are
         interested in readability.
         """
-        return [m.fp for _, m in self.registered if m.wants_read]
+        return [fp for fp, m in self.registered if m.wants_read]
 
     @property
     def wlist(self):
@@ -68,7 +68,7 @@ class Selector(object):
         Returns a list of file-like objects which are
         interested in writability.
         """
-        return [m.fp for _, m in self.registered if m.wants_write]
+        return [fp for fp, m in self.registered if m.wants_write]
 
     def select(self, timeout=None):
         """
