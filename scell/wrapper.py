@@ -45,12 +45,17 @@ class Selector(object):
         del self.fps[fp]
 
     @property
+    def registered(self):
+        for fp in self.fps:
+            yield fp, self.fps[fp]
+
+    @property
     def rlist(self):
         """
         Returns a list of file-like objects which are
         interested in readability.
         """
-        return [m.fp for m in self.fps.values() if m.wants_read]
+        return [m.fp for _, m in self.registered if m.wants_read]
 
     @property
     def wlist(self):
@@ -58,7 +63,7 @@ class Selector(object):
         Returns a list of file-like objects which are
         interested in writability.
         """
-        return [m.fp for m in self.fps.values() if m.wants_write]
+        return [m.fp for _, m in self.registered if m.wants_write]
 
     def select(self, timeout=None):
         """
@@ -76,7 +81,7 @@ class Selector(object):
         rl, wl = set(rl), set(wl)
         result = []
 
-        for fp, mon in self.fps.items():
+        for fp, mon in self.registered:
             mon.readable = fp in rl
             mon.writable = fp in wl
 
