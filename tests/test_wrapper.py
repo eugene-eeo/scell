@@ -15,12 +15,6 @@ def selector(request, tmpdir):
     return p
 
 
-def test_register(selector):
-    arr = []
-    selector.register('', '', arr)
-    assert selector.info('') is arr
-
-
 def test_select(selector):
     for monitor in selector.select():
         assert monitor.readable

@@ -20,7 +20,7 @@ class Selector(object):
     def __init__(self):
         self.fps = {}
 
-    def register(self, fp, mode, monitor=None):
+    def register(self, fp, mode):
         """
         Register a given *fp* (file handle) under a
         given *mode*. The *mode* can either be ``r``,
@@ -30,8 +30,7 @@ class Selector(object):
         :param mode: Whether read and or write-ready
             events should be notified.
         """
-        if monitor is None:
-            monitor = Monitored(fp, mode)
+        monitor = Monitored(fp, mode)
         self.fps[fp] = monitor
         return monitor
 
@@ -85,11 +84,7 @@ class Selector(object):
         selector = Selector()
         for fp, mon in self.registered:
             if set(mon.mode) & mode:
-                selector.register(
-                    fp,
-                    mode=mon.mode,
-                    monitor=mon,
-                    )
+                selector.fps[fp] = mon
         return selector
 
     def select(self, timeout=None):
