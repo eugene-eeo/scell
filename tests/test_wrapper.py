@@ -11,7 +11,7 @@ def selector(request, tmpdir):
     p = Selector()
     for path in paths:
         path.write('abc')
-        p.register(open(str(path)), mode='rw')
+        p.register(open(str(path), mode='rw'), mode='rw')
     return p
 
 
@@ -55,3 +55,10 @@ def test_only(selector):
 
         assert set(sub.rlist) == fps
         assert set(sub.wlist) == fps
+
+
+def test_clear(selector):
+    selector.clear()
+
+    assert not selector.select()
+    assert not list(selector.registered)

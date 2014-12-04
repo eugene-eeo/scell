@@ -120,3 +120,6 @@ class Selector(object):
                 result.append(mon)
 
         return result
+
+    def clear(self):
+         self.fps.clear()
