@@ -31,34 +31,9 @@ class Selector(dict):
         self[fp] = monitor
         return monitor
 
-    def unregister(self, fp):
-        """
-        Removes *fp* from the internal dictionary of
-        file handles to monitor objects.
-
-        :param fp: The file-like object.
-        """
-        del self[fp]
-
-    def info(self, fp):
-        """
-        Returns the monitor object for a registered
-        file-like object *fp*.
-
-        :param fp: A file-like object that was already
-            registered.
-        """
-        return self[fp]
-
-    @property
-    def registered(self):
-        """
-        Returns an iterable of file-object to monitor
-        pairs that are registered on the current
-        Selector object.
-        """
-        for fp in self:
-            yield fp, self[fp]
+    info = dict.__getitem__
+    unregister = dict.__delitem__
+    registered = property(dict.items)
 
     @property
     def rlist(self):
