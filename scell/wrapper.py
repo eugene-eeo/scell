@@ -33,7 +33,16 @@ class Selector(dict):
 
     info = dict.__getitem__
     unregister = dict.__delitem__
-    registered = property(dict.items)
+
+    @property
+    def registered(self):
+        """
+        Returns an iterable of file-object to monitor
+        pairs that are registered on the current
+        Selector object.
+        """
+        for fp in self:
+            yield fp, self[fp]
 
     @property
     def rlist(self):
