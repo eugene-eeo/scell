@@ -80,6 +80,15 @@ class Selector(object):
         return [fp for fp, m in self.registered if m.wants_write]
 
     def only(self, mode):
+        """
+        Returns a new selector object with only the
+        monitors which are interested in a given *mode*,
+        i.e. if *mode*='r' monitors with 'rw' or 'r'
+        will be registered on the new selector.
+
+        :param mode: Whether monitors interested in
+            read and or write should be registered.
+        """
         mode = set(mode)
         selector = Selector()
         for fp, mon in self.registered:

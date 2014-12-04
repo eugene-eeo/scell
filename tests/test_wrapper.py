@@ -11,7 +11,7 @@ def selector(request, tmpdir):
     p = Selector()
     for path in paths:
         path.write('abc')
-        p.register(open(str(path)), mode='r')
+        p.register(open(str(path)), mode='rw')
     return p
 
 
@@ -24,7 +24,7 @@ def test_select(selector):
 def test_info(selector):
     for item in selector.rlist:
         assert selector.info(item).wants_read
-        assert selector.info(item).mode == 'r'
+        assert selector.info(item).mode == 'rw'
 
 
 def test_unregister(selector):
@@ -46,7 +46,12 @@ def test_callbacks(selector):
 
 
 def test_only(selector):
-    sub = selector.only('r')
+    fps = set(selector.rlist)
+    for modestring in ['r', 'w', 'rw']:
+        sub = selector.only(modestring)
 
-    assert all(m.readable for m in sub.select())
-    assert all(m.readable for fp, m in selector.registered)
+        assert all(m.readable for m in sub.select())
+        assert all(m.readable for fp, m in selector.registered)
+
+        assert set(sub.rlist) == fps
+        assert set(sub.wlist) == fps
