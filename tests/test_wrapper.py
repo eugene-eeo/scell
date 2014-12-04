@@ -37,7 +37,7 @@ def test_unregister(selector):
 
 
 def test_callbacks(selector):
-    for mon in selector.fps.values():
+    for mon in selector.values():
         mon.callback = lambda m=mon: m.fp.seek(1)
 
     for mon in selector.select():
@@ -55,10 +55,3 @@ def test_only(selector):
 
         assert set(sub.rlist) == fps
         assert set(sub.wlist) == fps
-
-
-def test_clear(selector):
-    selector.clear()
-
-    assert not selector.select()
-    assert not list(selector.registered)

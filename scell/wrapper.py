@@ -10,15 +10,12 @@
 from scell.core import select, Monitored
 
 
-class Selector(object):
+class Selector(dict):
     """
     A selector object maintains a dictionary of
     file-like objects to ``~scell.core.Monitored``
     objects.
     """
-
-    def __init__(self):
-        self.fps = {}
 
     def register(self, fp, mode):
         """
@@ -31,7 +28,7 @@ class Selector(object):
             events should be notified.
         """
         monitor = Monitored(fp, mode)
-        self.fps[fp] = monitor
+        self[fp] = monitor
         return monitor
 
     def unregister(self, fp):
@@ -41,7 +38,7 @@ class Selector(object):
 
         :param fp: The file-like object.
         """
-        del self.fps[fp]
+        del self[fp]
 
     def info(self, fp):
         """
@@ -51,7 +48,7 @@ class Selector(object):
         :param fp: A file-like object that was already
             registered.
         """
-        return self.fps[fp]
+        return self[fp]
 
     @property
     def registered(self):
@@ -60,8 +57,8 @@ class Selector(object):
         pairs that are registered on the current
         Selector object.
         """
-        for fp in self.fps:
-            yield fp, self.fps[fp]
+        for fp in self:
+            yield fp, self[fp]
 
     @property
     def rlist(self):
@@ -69,7 +66,7 @@ class Selector(object):
         Returns a list of file-like objects which are
         interested in readability.
         """
-        return [fp for fp, m in self.registered if m.wants_read]
+        return [fp for fp, m in self.items() if m.wants_read]
 
     @property
     def wlist(self):
@@ -77,7 +74,7 @@ class Selector(object):
         Returns a list of file-like objects which are
         interested in writability.
         """
-        return [fp for fp, m in self.registered if m.wants_write]
+        return [fp for fp, m in self.items() if m.wants_write]
 
     def only(self, mode):
         """
@@ -93,7 +90,7 @@ class Selector(object):
         selector = Selector()
         for fp, mon in self.registered:
             if set(mon.mode) & mode:
-                selector.fps[fp] = mon
+                selector[fp] = mon
         return selector
 
     def select(self, timeout=None):
@@ -120,6 +117,3 @@ class Selector(object):
                 result.append(mon)
 
         return result
-
-    def clear(self):
-         self.fps.clear()
