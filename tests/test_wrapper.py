@@ -15,6 +15,12 @@ def selector(request, tmpdir):
     return p
 
 
+def test_register(selector):
+    arr = []
+    selector.register('', '', arr)
+    assert selector.info('') is arr
+
+
 def test_select(selector):
     for monitor in selector.select():
         assert monitor.readable
@@ -43,3 +49,10 @@ def test_callbacks(selector):
     for mon in selector.select():
         mon.callback()
         assert mon.fp.tell() == 1
+
+
+def test_only(selector):
+    sub = selector.only('r')
+
+    assert all(m.readable for m in sub.select())
+    assert all(m.readable for fp, m in selector.registered)
