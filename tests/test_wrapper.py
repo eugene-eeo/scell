@@ -11,7 +11,7 @@ def selector(request, tmpdir):
     p = Selector()
     for path in paths:
         path.write('abc')
-        p.register(open(str(path), mode='rw'), mode='rw')
+        p.register(open(str(path), mode='r+'), mode='rw')
     return p
 
 
