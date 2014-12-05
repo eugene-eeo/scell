@@ -1,7 +1,7 @@
 Scell: Selectors for Humans
 ===========================
 
-|Build| |Version|
+|Build| |Downloads|
 
 Scell is a MIT-licensed selector library, written in Python.
 
@@ -46,5 +46,5 @@ To install Scell, simply::
 
 .. |Build| image:: http://img.shields.io/travis/eugene-eeo/scell.svg
    :target: https://travis-ci.org/eugene-eeo/scell
-.. |Version| image:: http://img.shields.io/pypi/v/scell.svg
+.. |Downloads| image:: https://img.shields.io/pypi/dm/scell.svg
    :target: https://pypi.python.org/pypi/scell
