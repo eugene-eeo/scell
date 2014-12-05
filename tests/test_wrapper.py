@@ -29,7 +29,7 @@ def test_info(selector):
 
 def test_ready(selector):
     for item in selector.select():
-        assert item.ready()
+        assert item.ready
 
 
 def test_unregister(selector):

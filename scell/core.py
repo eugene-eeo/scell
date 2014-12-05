@@ -57,6 +57,7 @@ class Monitored(object):
             'w' if self.wants_write else '',
             ))
 
+    @property
     def ready(self):
         return (
             self.readable is self.wants_read and
