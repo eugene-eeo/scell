@@ -36,9 +36,9 @@ class Selector(dict):
     @property
     def registered(self):
         """
-        Returns an iterable of file-object to monitor
-        pairs that are registered on the current
-        Selector object.
+        Returns an iterable of file-like object to
+        monitor pairs that are registered on the
+        current Selector object.
         """
         for fp in self:
             yield fp, self[fp]
