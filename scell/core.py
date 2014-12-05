@@ -55,7 +55,13 @@ class Monitored(object):
         return ''.join((
             'r' if self.wants_read else '',
             'w' if self.wants_write else '',
-        ))
+            ))
+
+    def ready(self):
+        return (
+            self.readable is self.wants_read and
+            self.writable is self.wants_write
+            )
 
     @staticmethod
     def callback():

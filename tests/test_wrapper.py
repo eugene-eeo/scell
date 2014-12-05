@@ -27,6 +27,11 @@ def test_info(selector):
         assert selector.info(item).mode == 'rw'
 
 
+def test_ready(selector):
+    for item in selector.select():
+        assert item.ready()
+
+
 def test_unregister(selector):
     for item in selector.rlist:
         selector.unregister(item)
