@@ -59,6 +59,11 @@ class Monitored(object):
 
     @property
     def ready(self):
+        """
+        Tells whether the monitor object is ready
+        or not- whether it's readability and
+        writability requirements are met.
+        """
         return (
             self.readable is self.wants_read and
             self.writable is self.wants_write
