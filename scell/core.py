@@ -63,7 +63,7 @@ class Monitored(object):
         """
         Tells whether the monitor object is ready
         or not- whether it's readability and
-        writability requirements are met.
+        writability interests are met.
         """
         return (
             self.readable is self.wants_read and
