@@ -69,10 +69,9 @@ class Selector(dict):
         :param mode: Whether monitors interested in
             read and or write should be registered.
         """
-        mode = set(mode)
         selector = Selector()
         for fp, mon in self.registered:
-            if set(mon.mode) & mode:
+            if mode in mon.mode:
                 selector[fp] = mon
         return selector
 

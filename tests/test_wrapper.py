@@ -13,7 +13,7 @@ def test_rlist_wlist(selector):
 def test_only(selector):
     mlist = [m for _, m in selector.registered]
 
-    for mode in ['r', 'w']:
+    for mode in ['r', 'w', 'rw']:
         sel = selector.only(mode)
         res = sel.select()
 
