@@ -1,29 +1,17 @@
-from scell.core import Monitored, select
+from scell.core import select, Monitored
 
 
-def test_select(tmpdir):
-    handles = []
-    paths = [tmpdir.join(p) for p in ['h', 'g']]
-
-    for item in paths:
-        item.write('')
-        handles.append(open(str(item)))
-
-    assert select(handles, [], 0) == (handles, [])
-    assert select([], [], 0) == ([], [])
+def test_select(handles):
+    assert select([], []) == ([], [])
+    assert select(handles, []) == (handles, [])
+    assert select(handles, handles) == (handles, handles)
 
 
-def test_monitored():
-    m = Monitored(None, 'rw')
+def test_monitored(handles):
+    for monitor in [Monitored(fp, 'rw') for fp in handles]:
+        monitor.readable = True
+        monitor.writable = True
 
-    assert m.wants_read
-    assert m.wants_write
-    assert m.mode == 'rw'
-
-    assert not m.readable
-    assert not m.writable
-
-    m.wants_read = False
-    assert m.mode == 'w'
-
-    m.callback()
+        assert monitor.mode == 'rw'
+        assert monitor.ready
+        assert not monitor.callback()
