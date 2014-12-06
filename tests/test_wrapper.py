@@ -1,3 +1,6 @@
+from pytest import raises
+
+
 def test_select(selector):
     for monitor in selector.select():
         assert monitor.ready
@@ -37,3 +40,8 @@ def test_info(selector):
     rlist = selector.rlist
     for fp in rlist:
         assert selector.info(fp).wants_read
+
+
+def test_info_nonexistent(selector):
+    with raises(KeyError):
+        selector.info('')
