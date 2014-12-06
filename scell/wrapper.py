@@ -81,7 +81,7 @@ class Selector(dict):
         Performs a ``~select.select`` call and waits
         for *timeout* seconds, or blocks (forever) if
         *timeout* is not specified. Returns a list of
-        readable/writable monitors.
+        readable and or writable monitors.
 
         :param timeout: Maximum number of seconds to
             wait. To block for an indefinite time, use

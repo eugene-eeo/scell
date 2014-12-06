@@ -1,6 +1,3 @@
-from pytest import raises
-
-
 def test_select(selector):
     for monitor in selector.select():
         assert monitor.ready
