@@ -66,9 +66,9 @@ class Monitored(object):
         writability interests are met.
         """
         return (
-            self.readable is self.wants_read and
-            self.writable is self.wants_write
-            )
+            int(self.readable) >= int(self.wants_read) and
+            int(self.writable) >= int(self.wants_write)
+        )
 
     @staticmethod
     def callback():
