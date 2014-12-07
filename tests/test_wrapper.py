@@ -38,3 +38,11 @@ def test_info(selector):
 def test_info_nonexistent(selector):
     with raises(KeyError):
         selector.info('')
+
+
+def test_callbacks(selector):
+    for _, mon in selector.registered:
+        mon.callback = lambda: 1
+
+    res = selector.select()
+    assert [m.callback() for m in res] == [1, 1]
