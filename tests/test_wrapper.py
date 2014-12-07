@@ -3,8 +3,15 @@ from pytest import raises
 
 
 def test_select(selector):
-    for monitor in selector.select():
+    res = selector.select()
+    assert res
+    for monitor in res:
         assert monitor.ready
+
+
+def test_select_empty():
+    sel = Selector()
+    assert sel.select() == []
 
 
 def test_rlist_wlist(handles, mode):

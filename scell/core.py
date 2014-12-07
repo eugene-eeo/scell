@@ -21,6 +21,8 @@ def select(rl, wl, timeout=0):
     :param timeout: Maximum blocking time in seconds,
         *None* for indefinite time.
     """
+    if not (rl or wl):
+        return [], []
     rlist, wlist, _ = _select(rl, wl, (), timeout)
     return rlist, wlist
 
