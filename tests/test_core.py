@@ -1,5 +1,5 @@
 from pytest import mark
-from itertools import chain, permutations
+from itertools import chain, product
 from scell.core import select, Monitored
 
 
@@ -25,7 +25,7 @@ def test_monitored(handle, mode):
 )
 def test_monitored_ready(handle, fmode, ok):
     monitor = Monitored(handle, fmode)
-    for r, w in permutations((0,1)):
+    for r, w in product((0,1), repeat=2):
         monitor.readable = r
         monitor.writable = w
 
