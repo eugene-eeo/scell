@@ -12,7 +12,7 @@ def mode(request):
 def handle(request, tmpdir):
     fp = tmpdir.join('file')
     fp.write('')
-    return open(str(fp), mode='r+')
+    return fp.open(mode='r+')
 
 
 @fixture(params=['stdio', 'files'])
@@ -23,7 +23,7 @@ def handles(request, tmpdir):
     paths = [tmpdir.join(x) for x in ['file1', 'file2']]
     for item in paths:
         item.write('')
-    return [open(str(x), mode='r+') for x in paths]
+    return [x.open(mode='r+') for x in paths]
 
 
 @fixture
