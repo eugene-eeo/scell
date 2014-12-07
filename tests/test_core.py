@@ -18,7 +18,6 @@ def test_monitored(handles, mode):
 @mark.parametrize(
     'fmode,attrs',
     chain(
-        [mark.xfail(('rw', m)) for m in [(0,1), (1,0), (0,0)]],
         [('w', m) for m in [(0,1), (1,1)]],
         [('r', m) for m in [(1,0), (1,1)]],
         [('rw', (1,1))],
@@ -31,4 +30,12 @@ def test_monitored_ready(handles, fmode, attrs):
         monitor.writable = w
 
         assert monitor.ready
-        assert monitor.mode == fmode
+
+
+@mark.parametrize('read,write', [(0,0), (0,1), (1,0)])
+def test_monitored_rw(handles, read, write):
+    for monitor in [Monitored(fp, 'rw') for fp in handles]:
+        monitor.readable = read
+        monitor.writable = write
+
+        assert not monitor.ready
