@@ -15,14 +15,11 @@ def test_monitored(handle, mode):
     assert not monitor.callback()
 
 
-@mark.parametrize(
-    'fmode,ok',
-    [
-        ('r', [(1, 0), (1, 1)]),
-        ('w', [(0, 1), (1, 1)]),
-        ('rw', [(1, 1)]),
-    ]
-)
+@mark.parametrize('fmode,ok', [
+    ('r', [(1, 0), (1, 1)]),
+    ('w', [(0, 1), (1, 1)]),
+    ('rw', [(1, 1)]),
+])
 def test_monitored_ready(handle, fmode, ok):
     monitor = Monitored(handle, fmode)
     for r, w in product((0,1), repeat=2):
