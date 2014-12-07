@@ -1,3 +1,4 @@
+from scell import Selector
 from pytest import raises
 
 
@@ -11,6 +12,15 @@ def test_rlist_wlist(selector):
     wlist = set(selector.wlist)
 
     assert rlist == wlist
+
+
+def test_register(handles, mode):
+    sel = Selector()
+    for item in handles:
+        sel.register(item, mode)
+
+    for char in mode:
+        assert getattr(sel, '%slist' % char)
 
 
 def test_only(selector, mode):
