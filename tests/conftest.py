@@ -8,6 +8,13 @@ def mode(request):
 
 
 @fixture
+def handle(request, tmpdir):
+    fp = tmpdir.join('file')
+    fp.write('')
+    return open(str(fp), mode='r+')
+
+
+@fixture
 def handles(request, tmpdir):
     paths = [
         tmpdir.join('file.txt'),
