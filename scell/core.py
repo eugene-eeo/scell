@@ -10,7 +10,7 @@
 from select import select as _select
 
 
-def select(rl, wl, timeout=None):
+def select(rl, wl, timeout=0):
     """
     Performs a ``~select.select`` call with the given
     read-list (*rl*), write-list (*wl*), and *timeout*
@@ -21,8 +21,6 @@ def select(rl, wl, timeout=None):
     :param timeout: Maximum blocking time in seconds,
         *None* for indefinite time.
     """
-    if not (rl or wl):
-        return [], []
     rlist, wlist, _ = _select(rl, wl, (), timeout)
     return rlist, wlist
 
