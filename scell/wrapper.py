@@ -49,7 +49,7 @@ class Selector(dict):
         Returns a list of file-like objects which are
         interested in readability.
         """
-        return [fp for fp, m in self.registered if m.wants_read]
+        return [fp for fp in self if self[fp].wants_read]
 
     @property
     def wlist(self):
@@ -57,7 +57,7 @@ class Selector(dict):
         Returns a list of file-like objects which are
         interested in writability.
         """
-        return [fp for fp, m in self.registered if m.wants_write]
+        return [fp for fp in self if self[fp].wants_write]
 
     def only(self, mode):
         """
