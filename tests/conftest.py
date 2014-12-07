@@ -2,6 +2,11 @@ from pytest import fixture
 from scell import Selector
 
 
+@fixture(params=['w', 'r', 'rw'])
+def mode(request):
+    return request.param
+
+
 @fixture
 def handles(request, tmpdir):
     paths = [

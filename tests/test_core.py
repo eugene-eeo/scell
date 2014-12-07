@@ -1,4 +1,3 @@
-from pytest import mark
 from scell.core import select, Monitored
 
 
@@ -8,7 +7,6 @@ def test_select(handles):
     assert select(handles, handles) == (handles, handles)
 
 
-@mark.parametrize('mode', ['r', 'w', 'rw'])
 def test_monitored(handles, mode):
     for monitor in [Monitored(fp, mode) for fp in handles]:
         monitor.readable = True
