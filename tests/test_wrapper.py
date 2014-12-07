@@ -7,14 +7,7 @@ def test_select(selector):
         assert monitor.ready
 
 
-def test_rlist_wlist(selector):
-    rlist = set(selector.rlist)
-    wlist = set(selector.wlist)
-
-    assert rlist == wlist
-
-
-def test_register(handles, mode):
+def test_rlist_wlist(handles, mode):
     sel = Selector()
     for item in handles:
         sel.register(item, mode)
