@@ -15,14 +15,12 @@ def handle(request, tmpdir):
 
 
 @fixture
-def handles(request, tmpdir):
-    paths = [
-        tmpdir.join('file.txt'),
-        tmpdir.join('open.txt'),
-    ]
-    for item in paths:
-        item.write('')
-    return [open(str(p), mode='r+') for p in paths]
+def handles(request, handle, tmpdir):
+    path = tmpdir.join('file2')
+    path.write('')
+
+    fp = open(str(path), mode='r+')
+    return [handle, fp]
 
 
 @fixture
