@@ -6,7 +6,8 @@ python:
     - "3.3"
     - "3.4"
     - "pypy"
-script: py.test tests
+    - "pypy3"
+script: py.test -v tests
 os:
     - linux
     - osx
