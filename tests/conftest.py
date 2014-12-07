@@ -1,5 +1,6 @@
-from pytest import fixture
+from sys import stdout, stderr
 from scell import Selector
+from pytest import fixture
 
 
 @fixture(params=['w', 'r', 'rw'])
@@ -14,13 +15,15 @@ def handle(request, tmpdir):
     return open(str(fp), mode='r+')
 
 
-@fixture
-def handles(request, handle, tmpdir):
-    path = tmpdir.join('file2')
-    path.write('')
+@fixture(params=['stdio', 'files'])
+def handles(request, tmpdir):
+    if request.param == 'stdio':
+        return [stdout, stderr]
 
-    fp = open(str(path), mode='r+')
-    return [handle, fp]
+    paths = [tmpdir.join(x) for x in ['file1', 'file2']]
+    for item in paths:
+        item.write('')
+    return [open(str(x), mode='r+') for x in paths]
 
 
 @fixture

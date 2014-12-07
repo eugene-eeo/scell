@@ -55,4 +55,4 @@ def test_callbacks(selector):
         mon.callback = lambda: 1
 
     res = selector.select()
-    assert [m.callback() for m in res] == [1, 1]
+    assert [m.callback() for m in res] == [1] * len(selector)
