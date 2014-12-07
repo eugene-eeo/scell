@@ -1,16 +1,26 @@
+from scell import Selector
 from pytest import raises
 
 
 def test_select(selector):
-    for monitor in selector.select():
+    res = selector.select()
+    assert res
+    for monitor in res:
         assert monitor.ready
 
 
-def test_rlist_wlist(selector):
-    rlist = set(selector.rlist)
-    wlist = set(selector.wlist)
+def test_select_empty():
+    sel = Selector()
+    assert sel.select() == []
 
-    assert rlist == wlist
+
+def test_rlist_wlist(handles, mode):
+    sel = Selector()
+    for item in handles:
+        sel.register(item, mode)
+
+    for char in mode:
+        assert getattr(sel, '%slist' % char)
 
 
 def test_only(selector, mode):
