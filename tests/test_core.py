@@ -9,9 +9,12 @@ def test_select(handles):
 
 def test_monitored(handles, mode):
     for monitor in [Monitored(fp, mode) for fp in handles]:
+        assert monitor.mode == mode
+        assert not monitor.callback()
+
+        assert not monitor.ready
+
         monitor.readable = True
         monitor.writable = True
 
-        assert monitor.mode == mode
         assert monitor.ready
-        assert not monitor.callback()
