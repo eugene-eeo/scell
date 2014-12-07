@@ -1,4 +1,4 @@
-from pytest import raises
+from pytest import mark, raises
 
 
 def test_select(selector):
@@ -13,19 +13,14 @@ def test_rlist_wlist(selector):
     assert rlist == wlist
 
 
-def test_only(selector):
+@mark.parametrize('mode', ['r', 'w', 'rw'])
+def test_only(selector, mode):
     mlist = [m for _, m in selector.registered]
+    sel = selector.only(mode)
+    res = sel.select()
 
-    for mode in ['r', 'w', 'rw']:
-        sel = selector.only(mode)
-        res = sel.select()
-
-        assert all(m.ready for m in res)
-        assert all(m.ready for m in mlist)
-
-        for m in res:
-            m.readable = False
-            m.writable = False
+    assert all(m.ready for m in res)
+    assert all(m.ready for m in mlist)
 
 
 def test_unregister(selector):
