@@ -1,13 +1,21 @@
 language: python
 python:
-    - "2.6"
-    - "2.7"
-    - "3.2"
-    - "3.3"
-    - "3.4"
-    - "pypy"
-    - "pypy3"
+    - '2.6'
+    - '2.7'
+    - '3.2'
+    - '3.3'
+    - '3.4'
+    - pypy
+    - pypy3
 script: py.test -v tests
 os:
     - linux
     - osx
+deploy:
+    provider: pypi
+    user: eugene-eeo
+    password:
+        secure: csEh9Z/9iOyU1tOsHbEsOOncbBSp4C8Odlh8C6OMBeZTH1O2CP/FDV7O4+4AZJhLN75oXkOB+toEi2Jr7KE4WtPBcZ5qhjfZS2u+jO+bl3HAQUgIgj65d36s5VbtrSgEKdcmBdLfaEDsFJtjoXPfaU//OOrZfQ4TWqlSFimmVQA=
+    on:
+        tags: true
+        repo: eugene-eeo/scell
