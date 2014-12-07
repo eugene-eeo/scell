@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='scell',
-    version='0.1.0',
+    version='0.1.1',
     description='simple wrapper atop select',
     license='MIT',
     author='Eugene Eeo',
