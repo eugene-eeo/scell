@@ -1,4 +1,4 @@
-from pytest import mark, fixture
+from pytest import mark
 from itertools import chain, permutations
 from scell.core import select, Monitored
 
@@ -16,20 +16,21 @@ def test_monitored(handle, mode):
 
 
 @mark.parametrize(
-    'fmode,passing',
+    'fmode,ok',
     [
         ('r', [(1, 0), (1, 1)]),
         ('w', [(0, 1), (1, 1)]),
         ('rw', [(1, 1)]),
     ]
 )
-def test_monitored_ready(handle, fmode, passing):
+def test_monitored_ready(handle, fmode, ok):
     monitor = Monitored(handle, fmode)
     for r, w in permutations((0,1)):
         monitor.readable = r
         monitor.writable = w
 
-        if (r, w) in passing:
+        if (r, w) in ok:
             assert monitor.ready
-        else:
-            assert not monitor.ready
+            continue
+
+        assert not monitor.ready
