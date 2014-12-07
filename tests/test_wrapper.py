@@ -31,8 +31,7 @@ def test_unregister(selector):
 
 
 def test_info(selector):
-    rlist = selector.rlist
-    for fp in rlist:
+    for fp in selector.rlist:
         assert selector.info(fp).wants_read
 
 
