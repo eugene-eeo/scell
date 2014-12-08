@@ -19,8 +19,8 @@ def test_rlist_wlist(handles, mode):
     for item in handles:
         sel.register(item, mode)
 
-    if 'r' in mode: assert sel.rlist
-    if 'w' in mode: assert sel.wlist
+    assert sel.rlist if 'r' in mode else 1
+    assert sel.wlist if 'w' in mode else 1
 
 
 def test_only(selector, mode):
