@@ -89,13 +89,13 @@ class Selector(dict):
         """
         rl, wl = select(self.rlist, self.wlist, timeout)
         rl, wl = set(rl), set(wl)
-        result = []
+        ready = []
 
         for fp, mon in self.registered:
             mon.readable = fp in rl
             mon.writable = fp in wl
 
             if mon.readable or mon.writable:
-                result.append(mon)
+                ready.append(mon)
 
-        return result
+        return ready
