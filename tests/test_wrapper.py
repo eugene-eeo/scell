@@ -19,8 +19,8 @@ def test_rlist_wlist(handles, mode):
     for item in handles:
         sel.register(item, mode)
 
-    for char in mode:
-        assert getattr(sel, '%slist' % char)
+    if 'r' in mode: assert sel.rlist
+    if 'w' in mode: assert sel.wlist
 
 
 def test_only(selector, mode):
@@ -47,7 +47,7 @@ def test_info(selector):
 
 def test_info_nonexistent(selector):
     with raises(KeyError):
-        selector.info('')
+        selector.info(0)
 
 
 def test_callbacks(selector):
