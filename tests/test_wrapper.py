@@ -19,8 +19,8 @@ def test_rlist_wlist(handles, mode):
     for item in handles:
         sel.register(item, mode)
 
-    if 'r' in mode: assert sel.rlist
-    if 'w' in mode: assert sel.wlist
+    assert sel.rlist if 'r' in mode else 1
+    assert sel.wlist if 'w' in mode else 1
 
 
 def test_only(selector, mode):
@@ -57,3 +57,15 @@ def test_callbacks(selector):
     res = selector.select()
     exp = [1] * len(selector)
     assert [m.callback() for m in res] == exp
+
+
+def test_ready(selector):
+    results = selector.select()
+    ready = list(selector.ready)
+
+    assert ready
+    assert len(ready) == 2
+
+    for monitor in ready:
+        assert monitor.ready
+        assert monitor in results
