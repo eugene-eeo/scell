@@ -61,6 +61,11 @@ def test_callbacks(selector):
 
 def test_ready(selector):
     results = selector.select()
-    for monitor in selector.ready:
+    ready = list(selector.ready)
+
+    assert ready
+    assert len(ready) == 2
+
+    for monitor in ready:
         assert monitor.ready
         assert monitor in results
