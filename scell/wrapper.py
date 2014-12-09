@@ -99,3 +99,14 @@ class Selector(dict):
                 ready.append(mon)
 
         return ready
+
+    @property
+    def ready(self):
+        """
+        Yields the registered monitors which can
+        be either written to or read from, depending
+        on their mode.
+        """
+        for _, mon in self.registered:
+            if mon.ready:
+                yield mon
