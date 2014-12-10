@@ -44,6 +44,10 @@ class Selector(dict):
             yield fp, self[fp]
 
     @property
+    def handles(self):
+        return list(self)
+
+    @property
     def rwlist(self):
         rl, wl = [], []
         for fp, mon in self.registered:
