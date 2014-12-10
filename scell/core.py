@@ -40,6 +40,7 @@ class Monitored(object):
 
     readable = False
     writable = False
+    callback = staticmethod(lambda: None)
 
     def __init__(self, fp, mode):
         self.fp = fp
@@ -69,12 +70,3 @@ class Monitored(object):
             self.readable >= self.wants_read and
             self.writable >= self.wants_write
             )
-
-    @staticmethod
-    def callback():
-        """
-        A static method that can be overriden to
-        effectively implement callbacks that can
-        be triggered after the object is ready.
-        """
-        pass
