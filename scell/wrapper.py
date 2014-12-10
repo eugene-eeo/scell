@@ -45,10 +45,20 @@ class Selector(dict):
 
     @property
     def handles(self):
+        """
+        Returns a list of registered file objects,
+        ideal for use where you might modify the
+        selector while iterating.
+        """
         return list(self)
 
     @property
     def rwlist(self):
+        """
+        Returns a list of file objects that are
+        interested in readability and writability,
+        respectively.
+        """
         rl, wl = [], []
         for fp, mon in self.registered:
             if mon.wants_read:
