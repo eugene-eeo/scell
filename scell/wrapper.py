@@ -44,20 +44,28 @@ class Selector(dict):
             yield fp, self[fp]
 
     @property
-    def rlist(self):
+    def handles(self):
         """
-        Returns a list of file-like objects which are
-        interested in readability.
+        Returns a list of registered file objects,
+        ideal for use where you might modify the
+        selector while iterating.
         """
-        return [fp for fp in self if self[fp].wants_read]
+        return list(self)
 
     @property
-    def wlist(self):
+    def rwlist(self):
         """
-        Returns a list of file-like objects which are
-        interested in writability.
+        Returns a list of file objects that are
+        interested in readability and writability,
+        respectively.
         """
-        return [fp for fp in self if self[fp].wants_write]
+        rl, wl = [], []
+        for fp, mon in self.registered:
+            if mon.wants_read:
+                rl.append(fp)
+            if mon.wants_write:
+                wl.append(fp)
+        return rl, wl
 
     def only(self, mode):
         """
@@ -87,7 +95,7 @@ class Selector(dict):
             ``None`` or to select the monitors which
             are ready, use ``0``.
         """
-        rl, wl = select(self.rlist, self.wlist, timeout)
+        rl, wl = select(*self.rwlist, timeout=timeout)
         rl, wl = set(rl), set(wl)
         ready = []
 
