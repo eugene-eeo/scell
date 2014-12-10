@@ -14,15 +14,6 @@ def test_select_empty():
     assert sel.select() == []
 
 
-def test_rlist_wlist(handles, mode):
-    sel = Selector()
-    for item in handles:
-        sel.register(item, mode)
-
-    assert sel.rlist if 'r' in mode else 1
-    assert sel.wlist if 'w' in mode else 1
-
-
 def test_only(selector, mode):
     mlist = [m for _, m in selector.registered]
     sel = selector.only(mode)
@@ -33,15 +24,14 @@ def test_only(selector, mode):
 
 
 def test_unregister(selector):
-    for item in selector.rlist:
-        selector.unregister(item)
+    for fp in selector.keys():
+        selector.unregister(fp)
 
-    assert not selector.rlist
-    assert not selector.wlist
+    assert not selector
 
 
 def test_info(selector):
-    for fp in selector.rlist:
+    for fp in selector:
         assert selector.info(fp).wants_read
 
 
