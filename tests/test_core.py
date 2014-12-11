@@ -12,7 +12,7 @@ def test_select(handles):
 def test_monitored(handle, mode):
     monitor = Monitored(handle, mode)
     assert monitor.mode == mode
-    assert not monitor.callback()
+    assert monitor.callback() is None
 
 
 @mark.parametrize('fmode,attrs', [
