@@ -34,7 +34,9 @@ Features
 - Extremely small API with small footprint and 100% coverage
 - Core abstractions and utilities can be used directly
 - Efficient implementation of callbacks
-- Highly documented codebase
+- Highly `documented`_ codebase
+
+.. _documented: https://scell.rtfd.org
 
 
 Installation
