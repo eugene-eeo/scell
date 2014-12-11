@@ -54,7 +54,7 @@ def test_ready(selector):
     ready = list(selector.ready)
 
     assert ready
-    assert len(ready) == 2
+    assert len(ready) == len(selector)
 
     for monitor in ready:
         assert monitor.ready
