@@ -1,5 +1,4 @@
 from pytest import mark
-from itertools import chain, product
 from scell.core import select, Monitored
 
 
@@ -36,8 +35,10 @@ def test_monitored_mode(handle, fmode, attrs):
     ('rw', [(1, 1)]),
 ])
 def test_monitored_ready(handle, fmode, ok):
+    possible = [(0, 0), (0, 1), (1, 0), (1, 1)]
     monitor = Monitored(handle, fmode)
-    for r, w in product((0, 1), repeat=2):
+
+    for r, w in possible:
         monitor.readable = r
         monitor.writable = w
 
