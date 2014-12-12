@@ -1,10 +1,5 @@
-from pytest import mark, fixture
+from pytest import mark
 from scell.core import select, Monitored
-
-
-@fixture
-def possible(request):
-    return [(0, 0), (0, 1), (1, 0), (1, 1)]
 
 
 def test_select(handles):
