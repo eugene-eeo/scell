@@ -31,11 +31,11 @@ def test_monitored_mode(handle, fmode, attrs, possible):
         monitor.wants_read = r
         monitor.wants_write = w
 
-        if (r, w) != attrs:
-            assert monitor.mode != fmode
+        if (r, w) == attrs:
+            assert monitor.mode == fmode
             continue
 
-        assert monitor.mode == fmode
+        assert monitor.mode != fmode
 
 
 @mark.parametrize('fmode,ok', [
