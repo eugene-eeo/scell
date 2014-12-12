@@ -105,6 +105,12 @@ for example::
     >>> list(selector.ready)
     [<scell.core.Monitored object at 0x...>]
 
+.. WARNING::
+   You cannot modify the selector object while iterating
+   over the ``ready`` property. This is because internally
+   this depends on ``registered`` which is not modification
+   safe.
+
 Callbacks
 #########
 
