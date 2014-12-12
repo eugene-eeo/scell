@@ -49,7 +49,9 @@ Iteration
 
 You can get an iterable of file object and monitored
 objects with the :attr:`scell.wrapper.Selector.registered`
-property::
+property:
+
+.. code-block:: python
 
     for fp, mon in selector.registered:
         # do something
@@ -62,7 +64,9 @@ property::
 Alternatively if you want to only get the keys in a
 consistent (Python 2.x and 3.x) and modification resistant
 way (you can modify the selector while iterating), use
-the ``handles`` attribute, for example::
+the ``handles`` attribute, for example:
+
+.. code-block:: python
 
     for fp in selector.handles:
         # do something
@@ -109,7 +113,7 @@ for example::
    You cannot modify the selector object while iterating
    over the ``ready`` property. This is because internally
    this depends on ``registered`` which is not modification
-   safe.
+   resistant.
 
 Callbacks
 #########
@@ -117,7 +121,9 @@ Callbacks
 Callbacks can be easily implemented using the ``callback``
 attribute of monitored objects. However scell will not
 call the callbacks directly. It is up to the user code
-to decide when and where to call them::
+to decide when and where to call them:
+
+.. code-block:: python
 
     for mon in selector.values():
         mon.callback = lambda: 1
