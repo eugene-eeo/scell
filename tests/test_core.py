@@ -15,18 +15,22 @@ def test_monitored(handle, mode):
 
 
 @mark.parametrize('fmode,attrs', [
-    ('r', (1,0)),
-    ('w', (0,1)),
-    ('rw', (1,1)),
+    ('r', (1, 0)),
+    ('w', (0, 1)),
+    ('rw', (1, 1)),
 ])
-def test_monitored_mode(handle, fmode, attrs):
-    r, w = attrs
+def test_monitored_mode(handle, fmode, attrs, possible):
     monitor = Monitored(handle, '')
 
-    monitor.wants_read = r
-    monitor.wants_write = w
+    for r, w in possible:
+        monitor.wants_read = r
+        monitor.wants_write = w
 
-    assert monitor.mode == fmode
+        if (r, w) == attrs:
+            assert monitor.mode == fmode
+            continue
+
+        assert monitor.mode != fmode
 
 
 @mark.parametrize('fmode,ok', [
@@ -34,8 +38,7 @@ def test_monitored_mode(handle, fmode, attrs):
     ('w', [(0, 1), (1, 1)]),
     ('rw', [(1, 1)]),
 ])
-def test_monitored_ready(handle, fmode, ok):
-    possible = [(0, 0), (0, 1), (1, 0), (1, 1)]
+def test_monitored_ready(handle, fmode, ok, possible):
     monitor = Monitored(handle, fmode)
 
     for r, w in possible:
