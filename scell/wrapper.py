@@ -115,6 +115,4 @@ class Selector(dict):
         be either written to or read from, depending
         on their mode.
         """
-        for _, mon in self.registered:
-            if mon.ready:
-                yield mon
+        return [mon for _, mon in self.registered if mon.ready]
