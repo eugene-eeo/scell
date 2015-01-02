@@ -45,8 +45,8 @@ def test_callbacks(selector):
         mon.callback = lambda: 1
 
     res = selector.select()
-    exp = [1] * len(selector)
-    assert [m.callback() for m in res] == exp
+    exp = len(selector)
+    assert sum(m.callback() for m in res) == exp
 
 
 def test_ready(selector):
