@@ -50,7 +50,7 @@ class Selector(dict):
         ideal for use where you might modify the
         selector while iterating.
         """
-        return [fp for fp in self]
+        return list(self)
 
     @property
     def rwlist(self):
