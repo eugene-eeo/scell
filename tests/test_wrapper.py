@@ -51,7 +51,7 @@ def test_callbacks(selector):
 
 def test_ready(selector):
     results = selector.select()
-    ready = list(selector.ready)
+    ready = selector.ready
 
     assert ready
     assert len(ready) == len(selector)

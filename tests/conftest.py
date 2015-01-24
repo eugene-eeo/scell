@@ -26,6 +26,6 @@ def handles(request):
 @fixture
 def selector(request, handles):
     sel = Selector()
-    for item in handles:
-        sel.register(item, mode='rw')
+    for fp in handles:
+        sel.register(fp, mode='rw')
     return sel

@@ -82,7 +82,7 @@ class Selector(dict):
                 selector[fp] = mon
         return selector
 
-    def select(self, timeout=0):
+    def select(self, timeout=None):
         """
         Returns a list of monitors which are readable
         or writable.
@@ -98,7 +98,7 @@ class Selector(dict):
 
         for fp, mon in self.registered:
             mon.readable = fp in rl
-            mon.writanle = fp in wl
+            mon.writable = fp in wl
 
             if mon.readable or mon.writable:
                 result.append(mon)
