@@ -55,8 +55,8 @@ class Selector(dict):
     @property
     def rwlist(self):
         """
-        Returns a list of file objects that are
-        interested in readability and writability,
+        Returns a tuple of lists of file objects that
+        are interested in readability and writability,
         respectively.
         """
         rl, wl = [], []
@@ -71,11 +71,10 @@ class Selector(dict):
         """
         Returns a new selector object with only the
         monitors which are interested in a given *mode*,
-        i.e. if *mode*='r' monitors with 'rw' or 'r'
+        i.e. if ``mode='r'`` monitors with 'rw' or 'r'
         will be registered on the new selector.
 
-        :param mode: Whether monitors interested in
-            read and or write should be registered.
+        :param mode: Desired mode.
         """
         selector = Selector()
         for fp, mon in self.registered:
@@ -83,12 +82,10 @@ class Selector(dict):
                 selector[fp] = mon
         return selector
 
-    def select(self, timeout=None):
+    def select(self, timeout=0):
         """
-        Performs a ``~select.select`` call and waits
-        for *timeout* seconds, or blocks (forever) if
-        *timeout* is not specified. Returns a list of
-        readable and or writable monitors.
+        Returns a list of monitors which are readable
+        or writable.
 
         :param timeout: Maximum number of seconds to
             wait. To block for an indefinite time, use
@@ -97,22 +94,21 @@ class Selector(dict):
         """
         rl, wl = select(*self.rwlist, timeout=timeout)
         rl, wl = set(rl), set(wl)
-        ready = []
+        result = []
 
         for fp, mon in self.registered:
             mon.readable = fp in rl
-            mon.writable = fp in wl
+            mon.writanle = fp in wl
 
             if mon.readable or mon.writable:
-                ready.append(mon)
+                result.append(mon)
 
-        return ready
+        return result
 
     @property
     def ready(self):
         """
-        Yields the registered monitors which can
-        be either written to or read from, depending
-        on their mode.
+        Yields the registered monitors which are ready
+        (their interests are satisfied).
         """
         return [mon for _, mon in self.registered if mon.ready]
