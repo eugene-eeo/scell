@@ -111,4 +111,6 @@ class Selector(dict):
         Yields the registered monitors which are ready
         (their interests are satisfied).
         """
-        return [mon for _, mon in self.registered if mon.ready]
+        for fp, mon in self.registered:
+            if mon.ready:
+                yield mon
