@@ -26,7 +26,6 @@ def test_only(selector, mode):
 def test_unregister(selector):
     for fp in selector.handles:
         selector.unregister(fp)
-
     assert not selector
 
 
@@ -43,7 +42,6 @@ def test_info_nonexistent(selector):
 def test_callbacks(selector):
     for _, mon in selector.registered:
         mon.callback = lambda: 1
-
     res = selector.select()
     exp = len(selector)
     assert sum(m.callback() for m in res) == exp

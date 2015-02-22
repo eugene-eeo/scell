@@ -21,7 +21,6 @@ def test_monitored(handle, mode):
 ])
 def test_monitored_mode(handle, fmode, ok, possible):
     monitor = Monitored(handle, '')
-
     for r, w in possible:
         monitor.wants_read = r
         monitor.wants_write = w
@@ -40,7 +39,6 @@ def test_monitored_mode(handle, fmode, ok, possible):
 ])
 def test_monitored_ready(handle, fmode, ok, possible):
     monitor = Monitored(handle, fmode)
-
     for r, w in possible:
         monitor.readable = r
         monitor.writable = w
