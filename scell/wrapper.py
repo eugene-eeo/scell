@@ -13,7 +13,7 @@ from scell.core import select, Monitored
 class Selector(dict):
     """
     A selector object is a dictionary of file-like
-    objects to ``~scell.core.Monitored`` objects.
+    objects to ``Monitored`` objects.
     """
 
     def register(self, fp, mode):
