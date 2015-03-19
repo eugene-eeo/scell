@@ -12,14 +12,14 @@ from select import select as _select
 
 def select(rl, wl, timeout=0):
     """
-    Performs a ``~select.select`` call with the given
-    read-list (*rl*), write-list (*wl*), and *timeout*
-    in seconds.
+    Returns the file objects ready for reading/writing
+    from the read-list (*rl*) and write-list (*wl*),
+    subject to *timeout* in seconds.
 
     :param rl: Objects interested in readability.
     :param wl: Objects interested in writability.
     :param timeout: Maximum blocking time in seconds,
-        *None* for indefinite time.
+        *None* for no timeout.
     """
     if not (rl or wl):
         return [], []
@@ -30,7 +30,7 @@ def select(rl, wl, timeout=0):
 class Monitored(object):
     """
     Represents the interests of a file handle, and
-    it's results from a ``~scell.core.select`` call.
+    it's results from a ``select`` call.
 
     :param fp: The file-like object.
     :param mode: Either 'r', 'w' or 'rw', symbolising

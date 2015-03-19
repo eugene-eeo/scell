@@ -20,7 +20,7 @@ file objects onto the instance::
     >>> mon = selector.register(open('file.txt'), mode='r')
 
 A :class:`scell.core.Monitored` object will be returned,
-which represents a registered (monitored) file object,
+which encapsulates a registered (monitored) file object,
 and it's interests and readiness. For example if you want
 to check if a monitored object is readable or writable,
 and whether it is interested in readability and writability
@@ -74,10 +74,9 @@ the ``handles`` attribute, for example:
 Getting Monitored Objects
 #########################
 
-It is not practical for the user code to be in charge of
-keeping the monitored objects around without any way of
-querying for the same registered object. To do that use
-the :meth:`scell.wrapper.Selector.info` method::
+Since it's not practical and would be unintuitive for the
+user to have to store every monitor object, to query for
+a monitor given a file handle, use the ``info`` method:
 
     selector.info(fp)
 

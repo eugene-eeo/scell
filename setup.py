@@ -17,7 +17,7 @@ class PyTest(TestCommand):
 
 setup(
     name='scell',
-    version='0.2.1',
+    version='0.2.2',
     description='simple wrapper atop select',
     license='MIT',
     author='Eugene Eeo',

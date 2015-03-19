@@ -14,19 +14,18 @@ def test_monitored(handle, mode):
     assert monitor.callback() is None
 
 
-@mark.parametrize('fmode,attrs', [
+@mark.parametrize('fmode,ok', [
     ('r', (1, 0)),
     ('w', (0, 1)),
     ('rw', (1, 1)),
 ])
-def test_monitored_mode(handle, fmode, attrs, possible):
+def test_monitored_mode(handle, fmode, ok, possible):
     monitor = Monitored(handle, '')
-
     for r, w in possible:
         monitor.wants_read = r
         monitor.wants_write = w
 
-        if (r, w) == attrs:
+        if (r, w) == ok:
             assert monitor.mode == fmode
             continue
 
@@ -40,7 +39,6 @@ def test_monitored_mode(handle, fmode, attrs, possible):
 ])
 def test_monitored_ready(handle, fmode, ok, possible):
     monitor = Monitored(handle, fmode)
-
     for r, w in possible:
         monitor.readable = r
         monitor.writable = w

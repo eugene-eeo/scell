@@ -36,7 +36,7 @@ Features
 - Efficient implementation of callbacks
 - Highly `documented`_ codebase
 
-.. _documented: https://scell.rtfd.org
+.. _documented: https://scell.readthedocs.org
 
 
 Installation
