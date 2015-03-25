@@ -24,7 +24,7 @@ def test_only(selector, mode):
 
 
 def test_unregister(selector):
-    for fp in selector.handles:
+    for fp in list(selector):
         selector.unregister(fp)
     assert not selector
 

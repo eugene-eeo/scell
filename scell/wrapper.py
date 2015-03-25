@@ -44,15 +44,6 @@ class Selector(dict):
             yield fp, self[fp]
 
     @property
-    def handles(self):
-        """
-        Returns a list of registered file objects,
-        ideal for use where you might modify the
-        selector while iterating.
-        """
-        return list(self)
-
-    @property
     def rwlist(self):
         """
         Returns a tuple of lists of file objects that
@@ -69,10 +60,10 @@ class Selector(dict):
 
     def only(self, mode):
         """
-        Returns a new selector object with only the
-        monitors which are interested in a given *mode*,
-        i.e. if ``mode='r'`` monitors with 'rw' or 'r'
-        will be registered on the new selector.
+        Returns a new selector object with only monitors
+        which are interested in a given *mode*, i.e. if
+        ``mode='r'`` monitors with 'rw' or 'r' will be
+        registered on the new selector.
 
         :param mode: Desired mode.
         """
