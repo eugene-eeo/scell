@@ -33,10 +33,7 @@ def test_info(selector):
     for fp in selector:
         assert selector.info(fp).wants_read
 
-
-def test_info_nonexistent(selector):
-    with raises(KeyError):
-        selector.info(0)
+    assert selector.info(0) is None
 
 
 def test_callbacks(selector):

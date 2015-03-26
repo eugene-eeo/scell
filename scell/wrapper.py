@@ -30,15 +30,14 @@ class Selector(dict):
         self[fp] = monitor
         return monitor
 
-    info = dict.__getitem__
+    info = dict.get
     unregister = dict.__delitem__
 
     @property
     def registered(self):
         """
-        Returns an iterable of file-like object to
-        monitor pairs that are registered on the
-        current Selector object.
+        Yields the registered file object and
+        monitor pairs. Same as ``{}.items()``
         """
         for fp in self:
             yield fp, self[fp]
@@ -46,9 +45,9 @@ class Selector(dict):
     @property
     def rwlist(self):
         """
-        Returns a tuple of lists of file objects that
-        are interested in readability and writability,
-        respectively.
+        Returns ``(rl, wl)`` where ``rl`` and ``wl``
+        are file objects interested in readability
+        and writability, respectively.
         """
         rl, wl = [], []
         for fp, mon in self.registered:
