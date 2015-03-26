@@ -87,10 +87,10 @@ class Selector(dict):
         result = []
 
         for fp, mon in self.registered:
-            mon.readable = fp in rl
-            mon.writable = fp in wl
+            r_ok = mon.readable = fp in rl
+            w_ok = mon.writable = fp in wl
 
-            if mon.readable or mon.writable:
+            if r_ok or w_ok:
                 result.append(mon)
 
         return result
