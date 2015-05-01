@@ -37,7 +37,7 @@ class Selector(dict):
     def registered(self):
         """
         Yields the registered file object and
-        monitor pairs. Same as ``{}.items()``
+        monitor pairs. Same as ``dict.items``
         """
         for fp in self:
             yield fp, self[fp]
