@@ -14,13 +14,7 @@ from scell.core import select, Monitored
 def _generate_items(major_version=version_info[0]):
     if major_version == 3:
         return dict.items
-    def items(self):
-        """
-        D.items() -> list of D's (key, value) pairs, as 2-tuples
-        """
-        for item in self:
-            yield item, self[item]
-    return items
+    return dict.iteritems
 
 
 class Selector(dict):
