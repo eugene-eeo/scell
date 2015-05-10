@@ -8,14 +8,12 @@
 
 
 from sys import version_info
-from functools import wraps
 from scell.core import select, Monitored
 
 
 def _generate_items(major_version=version_info[0]):
     if major_version == 3:
         return dict.items
-    @wraps(dict.items)
     def items(self):
         for item in self:
             yield item, self[item]
