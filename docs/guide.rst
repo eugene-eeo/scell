@@ -44,6 +44,7 @@ you can use the calculated, dynamic properties::
     >>> mon.mode
     'r'
 
+
 Iteration
 #########
 
@@ -61,15 +62,6 @@ property:
    a dictionary subclass) while iterating over the
    ``registered`` property.
 
-Alternatively if you want to only get the keys in a
-consistent (Python 2.x and 3.x) and modification resistant
-way (you can modify the selector while iterating), use
-the ``handles`` attribute, for example:
-
-.. code-block:: python
-
-    for fp in selector.handles:
-        # do something
 
 Getting Monitored Objects
 #########################
