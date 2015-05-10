@@ -23,8 +23,8 @@ def select(rl, wl, timeout=0):
     """
     if not (rl or wl):
         return [], []
-    rlist, wlist, _ = _select(rl, wl, (), timeout)
-    return rlist, wlist
+    readers, writers, _ = _select(rl, wl, (), timeout)
+    return readers, writers
 
 
 class Monitored(object):
