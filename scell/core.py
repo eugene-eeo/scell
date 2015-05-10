@@ -38,14 +38,14 @@ class Monitored(object):
         respectively.
     """
 
-    readable = False
-    writable = False
+    readable = 0
+    writable = 0
     callback = staticmethod(lambda: None)
 
     def __init__(self, fp, mode):
         self.fp = fp
-        self.wants_read = 'r' in mode
-        self.wants_write = 'w' in mode
+        self.wants_read = int('r' in mode)
+        self.wants_write = int('w' in mode)
 
     @property
     def mode(self):
