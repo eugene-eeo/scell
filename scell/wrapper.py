@@ -11,12 +11,6 @@ from sys import version_info
 from scell.core import select, Monitored
 
 
-def _generate_items(major_version=version_info[0]):
-    if major_version == 3:
-        return dict.items
-    return dict.iteritems
-
-
 class Selector(dict):
     """
     A selector object is a dictionary of file-like
@@ -39,7 +33,8 @@ class Selector(dict):
 
     info = dict.get
     unregister = dict.__delitem__
-    registered = property(_generate_items())
+    registered = property(dict.items if version_info[0] == 3 else
+                          dict.iteritems)
 
     @property
     def rwlist(self):
