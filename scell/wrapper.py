@@ -69,7 +69,8 @@ class Selector(dict):
     def select(self, timeout=None):
         """
         Returns a list of monitors which are readable
-        or writable, subject to *timeout*.
+        or writable, i.e. their readability/writability
+        has changed, subject to *timeout*.
 
         :param timeout: Maximum number of seconds to
             wait. To block for an indefinite time, use
