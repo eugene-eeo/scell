@@ -7,6 +7,7 @@
 """
 
 
+from sys import version_info
 from scell.core import select, Monitored
 
 
@@ -32,15 +33,8 @@ class Selector(dict):
 
     info = dict.get
     unregister = dict.__delitem__
-
-    @property
-    def registered(self):
-        """
-        Yields the registered file object and
-        monitor pairs. Same as ``dict.items``
-        """
-        for fp in self:
-            yield fp, self[fp]
+    registered = property(dict.items if version_info[0] == 3 else
+                          dict.iteritems)
 
     @property
     def rwlist(self):
