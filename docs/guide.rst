@@ -70,7 +70,24 @@ Since it's not practical and would be unintuitive for the
 user to have to store every monitor object, to query for
 a monitor given a file handle, use the ``info`` method:
 
+.. code-block:: python
+
     selector.info(fp)
+
+
+``Selector.only``
+##################
+
+You can get monitors of only a certain mode, e.g. ``r``
+or ``w`` and store them in another Selector object with
+the :meth:`scell.wrapper.Selector.only` method:
+
+.. code-block:: python
+
+    s2 = selector.only('r')
+    for item in s2:
+        assert s2.info(item) is selector.info(item)
+        assert item.mode in ['r', 'rw']
 
 
 Waiting for IO Events
@@ -103,8 +120,7 @@ for example::
 .. WARNING::
    You cannot modify the selector object while iterating
    over the ``ready`` property. This is because internally
-   this depends on ``registered`` which is not modification
-   resistant.
+   this depends on ``registered``.
 
 Callbacks
 #########
