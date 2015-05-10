@@ -55,8 +55,8 @@ class Selector(dict):
         """
         Returns a new selector object with only monitors
         which are interested in a given *mode*, i.e. if
-        ``mode='r'`` monitors with 'rw' or 'r' will be
-        registered on the new selector.
+        ``mode == 'r'`` monitors with 'rw' or 'r' will
+        be registered on the new selector.
 
         :param mode: Desired mode.
         """
@@ -69,7 +69,8 @@ class Selector(dict):
     def select(self, timeout=None):
         """
         Returns a list of monitors which are readable
-        or writable.
+        or writable, i.e. their readability/writability
+        has changed, subject to *timeout*.
 
         :param timeout: Maximum number of seconds to
             wait. To block for an indefinite time, use

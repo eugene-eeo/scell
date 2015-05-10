@@ -23,14 +23,14 @@ def select(rl, wl, timeout=0):
     """
     if not (rl or wl):
         return [], []
-    rlist, wlist, _ = _select(rl, wl, (), timeout)
-    return rlist, wlist
+    readers, writers, _ = _select(rl, wl, (), timeout)
+    return readers, writers
 
 
 class Monitored(object):
     """
-    Represents the interests of a file handle, and
-    it's results from a ``select`` call.
+    Represents the interests of a file handle *fp*,
+    and it's results from a ``select`` call.
 
     :param fp: The file-like object.
     :param mode: Either 'r', 'w' or 'rw', symbolising
