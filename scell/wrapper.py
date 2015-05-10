@@ -30,34 +30,24 @@ class Selector(dict):
         self[fp] = monitor
         return monitor
 
-    info = dict.__getitem__
+    info = dict.get
     unregister = dict.__delitem__
 
     @property
     def registered(self):
         """
-        Returns an iterable of file-like object to
-        monitor pairs that are registered on the
-        current Selector object.
+        Yields the registered file object and
+        monitor pairs. Same as ``dict.items``
         """
         for fp in self:
             yield fp, self[fp]
 
     @property
-    def handles(self):
-        """
-        Returns a list of registered file objects,
-        ideal for use where you might modify the
-        selector while iterating.
-        """
-        return list(self)
-
-    @property
     def rwlist(self):
         """
-        Returns a tuple of lists of file objects that
-        are interested in readability and writability,
-        respectively.
+        Returns ``(rl, wl)`` where ``rl`` and ``wl``
+        are file objects interested in readability
+        and writability, respectively.
         """
         rl, wl = [], []
         for fp, mon in self.registered:
@@ -69,10 +59,10 @@ class Selector(dict):
 
     def only(self, mode):
         """
-        Returns a new selector object with only the
-        monitors which are interested in a given *mode*,
-        i.e. if ``mode='r'`` monitors with 'rw' or 'r'
-        will be registered on the new selector.
+        Returns a new selector object with only monitors
+        which are interested in a given *mode*, i.e. if
+        ``mode='r'`` monitors with 'rw' or 'r' will be
+        registered on the new selector.
 
         :param mode: Desired mode.
         """
@@ -97,10 +87,10 @@ class Selector(dict):
         result = []
 
         for fp, mon in self.registered:
-            mon.readable = fp in rl
-            mon.writable = fp in wl
+            r_ok = mon.readable = fp in rl
+            w_ok = mon.writable = fp in wl
 
-            if mon.readable or mon.writable:
+            if r_ok or w_ok:
                 result.append(mon)
 
         return result
