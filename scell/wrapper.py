@@ -12,10 +12,10 @@ from functools import wraps
 from scell.core import select, Monitored
 
 
-def _generate_items(cls, major_version=version_info[0]):
+def _generate_items(major_version=version_info[0]):
     if major_version == 3:
-        return cls.items
-    @wraps(cls.items)
+        return dict.items
+    @wraps(dict.items)
     def items(self):
         for item in self:
             yield item, self[item]
@@ -44,7 +44,7 @@ class Selector(dict):
 
     info = dict.get
     unregister = dict.__delitem__
-    registered = property(_generate_items(dict))
+    registered = property(_generate_items())
 
     @property
     def rwlist(self):
