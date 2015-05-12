@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from scell import Selector
 from pytest import raises
 
@@ -47,18 +48,22 @@ def test_ready(selector):
         assert monitor in results
 
 
-def test_monitors(handles):
-    s = Selector()
-    with s.scoped(handles) as (m1,m2):
-        s.select()
-        assert m1.ready
-        assert m2.ready
-    assert not s
+class TestScoped:
+    @contextmanager
+    def manager(self, handles):
+        s = Selector()
+        with s.scoped(handles) as r:
+            yield s, r
 
+    def test_peaceful(self, handles):
+        with self.manager(handles) as (s, (m1,m2)):
+            s.select()
+            assert m1.ready
+            assert m2.ready
+        assert not s
 
-def test_monitors_exception(handles):
-    s = Selector()
-    with raises(NameError):
-        with s.scoped(handles) as _:
-            raise NameError
-    assert not s
+    def test_exception(self, handles):
+        with raises(NameError):
+            with self.manager(handles) as (s, _):
+                raise NameError
+        assert not s
