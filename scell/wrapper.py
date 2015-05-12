@@ -102,7 +102,7 @@ class Selector(dict):
                 yield mon
 
     @contextmanager
-    def monitors(self, fps, mode='rw'):
+    def scoped(self, fps, mode='rw'):
         try:
             yield [self.register(fp, mode) for fp in fps]
         finally:

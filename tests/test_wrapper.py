@@ -58,7 +58,7 @@ def test_ready(selector):
 
 def test_monitors(handles):
     s = Selector()
-    with s.monitors(handles) as (m1,m2):
+    with s.scoped(handles) as (m1,m2):
         s.select()
         assert m1.ready
         assert m2.ready
@@ -68,6 +68,6 @@ def test_monitors(handles):
 def test_monitors_exception(handles):
     s = Selector()
     with raises(NameError):
-        with s.monitors(handles) as _:
+        with s.scoped(handles) as _:
             raise NameError
     assert not s
