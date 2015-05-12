@@ -101,5 +101,6 @@ class Selector(dict):
             yield monitors
         finally:
             for mon in monitors:
-                if mon.fp in self:
-                    self.unregister(mon.fp)
+                if mon.fp not in self:
+                    continue
+                self.unregister(mon.fp)
