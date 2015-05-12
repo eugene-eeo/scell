@@ -52,21 +52,6 @@ class Selector(dict):
                 wl.append(fp)
         return rl, wl
 
-    def only(self, mode):
-        """
-        Returns a new selector object with only monitors
-        which are interested in a given *mode*, i.e. if
-        ``mode == 'r'`` monitors with 'rw' or 'r' will
-        be registered on the new selector.
-
-        :param mode: Desired mode.
-        """
-        selector = Selector()
-        for fp, mon in self.registered:
-            if mode in mon.mode:
-                selector[fp] = mon
-        return selector
-
     def select(self, timeout=None):
         """
         Returns a list of monitors which are readable

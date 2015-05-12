@@ -14,15 +14,6 @@ def test_select_empty():
     assert sel.select() == []
 
 
-def test_only(selector, mode):
-    mlist = [m for _, m in selector.registered]
-    sel = selector.only(mode)
-    res = sel.select()
-
-    assert all(m.ready for m in res)
-    assert all(m.ready for m in mlist)
-
-
 def test_unregister(selector):
     for fp in list(selector):
         selector.unregister(fp)
