@@ -88,9 +88,18 @@ class Selector(dict):
 
     @contextmanager
     def scoped(self, fps, mode='rw'):
+        """
+        A context manager that automatically unregisters
+        **fps** once the block has finished executing.
+
+        :param fps: Iterable of file objects.
+        :param mode: Defaults to 'rw', the interests of
+            every file handle.
+        """
+        monitors = [self.register(fp, mode) for fp in fps]
         try:
-            yield [self.register(fp, mode) for fp in fps]
+            yield monitors
         finally:
-            for item in fps:
-                if item in self:
-                    self.unregister(item)
+            for mon in monitors:
+                if mon.fp in self:
+                    self.unregister(mon.fp)

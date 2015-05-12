@@ -75,21 +75,6 @@ a monitor given a file handle, use the ``info`` method:
     selector.info(fp)
 
 
-``Selector.only``
-##################
-
-You can get monitors of only a certain mode, e.g. ``r``
-or ``w`` and store them in another Selector object with
-the :meth:`scell.wrapper.Selector.only` method:
-
-.. code-block:: python
-
-    s2 = selector.only('r')
-    for item in s2:
-        assert s2.info(item) is selector.info(item)
-        assert item.mode in ['r', 'rw']
-
-
 Waiting for IO Events
 ---------------------
 
@@ -144,7 +129,37 @@ Unregistering File Objects
 Once you are done monitoring a file object, you will
 typically want to un-register it from the selector
 object. To do that use the :meth:`scell.wrapper.Selector.unregister`
-method, for example::
+method, for example:
+
+.. code-block:: python
 
     for mon in selector.handles:
         selector.unregister(mon)
+
+
+Scoped Monitors
+---------------
+
+You can register interest with a few file objects when
+only within a particular code block, i.e.:
+
+.. code-block:: python
+
+    with selector.scoped([fp1,fp2]) as [m1,m2]:
+        # if fp1 and fp2 are both ready
+        selector.select()
+        assert m1.ready and m2.ready
+
+    # both are automatically cleaned up afterwards,
+    # even if an exception is raised.
+    assert fp1 not in selector
+    assert fp2 not in selector
+
+By default the ``scoped`` method will register the
+file objects on both read and write activities, you
+may want to change that by passing a ``mode`` argument
+to the method, e.g:
+
+.. code-block:: python
+
+    selector.scoped([fp1,fp2], mode='r')
