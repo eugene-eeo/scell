@@ -75,21 +75,6 @@ a monitor given a file handle, use the ``info`` method:
     selector.info(fp)
 
 
-``Selector.only``
-##################
-
-You can get monitors of only a certain mode, e.g. ``r``
-or ``w`` and store them in another Selector object with
-the :meth:`scell.wrapper.Selector.only` method:
-
-.. code-block:: python
-
-    s2 = selector.only('r')
-    for item in s2:
-        assert s2.info(item) is selector.info(item)
-        assert item.mode in ['r', 'rw']
-
-
 Waiting for IO Events
 ---------------------
 
