@@ -8,6 +8,7 @@
 
 
 from sys import version_info
+from contextlib import contextmanager
 from scell.core import select, Monitored
 
 
@@ -51,21 +52,6 @@ class Selector(dict):
                 wl.append(fp)
         return rl, wl
 
-    def only(self, mode):
-        """
-        Returns a new selector object with only monitors
-        which are interested in a given *mode*, i.e. if
-        ``mode == 'r'`` monitors with 'rw' or 'r' will
-        be registered on the new selector.
-
-        :param mode: Desired mode.
-        """
-        selector = Selector()
-        for fp, mon in self.registered:
-            if mode in mon.mode:
-                selector[fp] = mon
-        return selector
-
     def select(self, timeout=None):
         """
         Returns a list of monitors which are readable
@@ -99,3 +85,21 @@ class Selector(dict):
         for fp, mon in self.registered:
             if mon.ready:
                 yield mon
+
+    @contextmanager
+    def scoped(self, fps, mode='rw'):
+        """
+        A context manager that automatically unregisters
+        **fps** once the block has finished executing.
+
+        :param fps: Iterable of file objects.
+        :param mode: Defaults to 'rw', the interests of
+            every file handle.
+        """
+        monitors = [self.register(fp, mode) for fp in fps]
+        try:
+            yield monitors
+        finally:
+            for mon in monitors:
+                if mon.fp in self:
+                    self.unregister(mon.fp)

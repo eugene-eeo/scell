@@ -14,15 +14,6 @@ def test_select_empty():
     assert sel.select() == []
 
 
-def test_only(selector, mode):
-    mlist = [m for _, m in selector.registered]
-    sel = selector.only(mode)
-    res = sel.select()
-
-    assert all(m.ready for m in res)
-    assert all(m.ready for m in mlist)
-
-
 def test_unregister(selector):
     for fp in list(selector):
         selector.unregister(fp)
@@ -54,3 +45,20 @@ def test_ready(selector):
     for monitor in ready:
         assert monitor.ready
         assert monitor in results
+
+
+def test_monitors(handles):
+    s = Selector()
+    with s.scoped(handles) as (m1,m2):
+        s.select()
+        assert m1.ready
+        assert m2.ready
+    assert not s
+
+
+def test_monitors_exception(handles):
+    s = Selector()
+    with raises(NameError):
+        with s.scoped(handles) as _:
+            raise NameError
+    assert not s
