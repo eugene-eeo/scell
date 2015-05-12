@@ -54,10 +54,10 @@ class Monitored(object):
         account any changes that might be made on
         the object's interests.
         """
-        return ''.join((
+        return '%s%s' % (
             'r' if self.wants_read else '',
             'w' if self.wants_write else '',
-            ))
+            )
 
     @property
     def ready(self):
