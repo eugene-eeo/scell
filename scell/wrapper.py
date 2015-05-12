@@ -8,6 +8,7 @@
 
 
 from sys import version_info
+from contextlib import contextmanager
 from scell.core import select, Monitored
 
 
@@ -99,3 +100,12 @@ class Selector(dict):
         for fp, mon in self.registered:
             if mon.ready:
                 yield mon
+
+    @contextmanager
+    def monitors(self, fps, mode='rw'):
+        try:
+            yield [self.register(fp, mode) for fp in fps]
+        finally:
+            for item in fps:
+                if item in self:
+                    self.unregister(item)

@@ -54,3 +54,20 @@ def test_ready(selector):
     for monitor in ready:
         assert monitor.ready
         assert monitor in results
+
+
+def test_monitors(handles):
+    s = Selector()
+    with s.monitors(handles) as (m1,m2):
+        s.select()
+        assert m1.ready
+        assert m2.ready
+    assert not s
+
+
+def test_monitors_exception(handles):
+    s = Selector()
+    with raises(NameError):
+        with s.monitors(handles) as _:
+            raise NameError
+    assert not s
