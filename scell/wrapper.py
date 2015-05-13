@@ -41,7 +41,6 @@ class Selector(dict):
     registered = property(dict.items if version_info[0] == 3 else
                           dict.iteritems)
 
-    @property
     def rwlist(self):
         """
         Returns ``(rl, wl)`` where ``rl`` and ``wl``
@@ -67,7 +66,7 @@ class Selector(dict):
             ``None`` or to select the monitors which
             are ready, use ``0``.
         """
-        rl, wl = select(*self.rwlist, timeout=timeout)
+        rl, wl = select(*self.rwlist(), timeout=timeout)
         rl, wl = set(rl), set(wl)
 
         for fp, mon in self.registered:
