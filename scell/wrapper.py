@@ -79,7 +79,6 @@ class Selector(dict):
                             readable=r_ok,
                             writable=w_ok)
 
-    @property
     def ready(self):
         """
         Yields the registered monitors which are ready

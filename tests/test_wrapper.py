@@ -37,7 +37,7 @@ def test_callbacks(selector):
 
 
 def test_ready(selector):
-    ready = list(selector.ready)
+    ready = list(selector.ready())
     assert ready
 
     for event in ready:
