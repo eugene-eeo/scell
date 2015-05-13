@@ -30,12 +30,7 @@ def select(rl, wl, timeout=0):
 class Monitored(object):
     """
     Represents the interests of a file handle *fp*,
-    and it's results from a ``select`` call.
-
-    :param fp: The file-like object.
-    :param mode: Either 'r', 'w' or 'rw', symbolising
-        interest in read, write, and both,
-        respectively.
+    and whether it *wants_read* and or *wants_write*.
     """
 
     callback = staticmethod(lambda: None)
@@ -47,6 +42,13 @@ class Monitored(object):
 
 
 class Event(object):
+    """
+    Represents the events that happened to a
+    *monitored* file object, and whether the
+    underlying file object is *readable* and
+    or *writable*.
+    """
+
     def __init__(self, monitored, readable, writable):
         self.monitored = monitored
         self.readable = readable
@@ -58,6 +60,11 @@ class Event(object):
 
     @property
     def ready(self):
+        """
+        Whether the *monitored* needs are met,
+        i.e. whether it is readable or writable,
+        taking it's needs into account.
+        """
         return (
             self.readable >= self.monitored.wants_read and
             self.writable >= self.monitored.wants_write
