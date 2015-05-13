@@ -28,3 +28,9 @@ def test_monitored_default_callback(monitored):
 def test_event_ready(monitored, changes, ok):
     event = Event(monitored, *changes)
     assert event.ready == ok
+
+
+def test_event_attrs(monitored):
+    event = Event(monitored, 1, 1)
+    assert event.fp is monitored.fp
+    assert event.callback is monitored.callback
