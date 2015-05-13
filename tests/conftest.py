@@ -1,10 +1,13 @@
-import os
+import platform
 from sys import stdout, stderr
 from scell import Selector
 from pytest import fixture
 
 
-if os.name == 'nt':
+PLATFORM = platform.system().lower()
+
+
+if 'win' in PLATFORM or 'nt' in PLATFORM:
     @fixture(autouse=True)
     def select_no_io(monkeypatch):
         monkeypatch.setattr(
