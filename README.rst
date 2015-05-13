@@ -12,12 +12,11 @@ again. Keeping track of these file handles are tricky. Let
 Scell handle it for you and focus on building an awesome
 library/server::
 
-    selector = scell.Selector()
-    file_obj = open('file.txt')
-    with selector.scoped([file_obj], mode='r') as (m,):
-        m.callback = lambda: 1
-        r = [event.callback() for event in selector.select()]
-        assert r == 1
+    >>> selector = scell.Selector()
+    >>> monitor = selector.register(open('file.txt'), mode='r')
+    >>> monitor.callback = lambda: 1
+    >>> [event.callback() for event in selector.ready]
+    [1]
 
 Scell allows implementors to effortlessly build libraries
 atop of the minimal abstraction provided, while also having
