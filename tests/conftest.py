@@ -6,10 +6,10 @@ from pytest import fixture
 
 @fixture(autouse=True)
 def select_no_io(monkeypatch):
-    monkeypatch.setattr(
-        'select.select',
-        lambda rl, wl, xl, timeout=None: (rl, wl, xl),
-    )
+    def select(rlist, wlist, xlist, timeout=None):
+        return rlist, wlist, xlist
+
+    monkeypatch.setattr('select.select', select)
 
 
 @fixture
