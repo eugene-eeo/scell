@@ -9,7 +9,7 @@
 
 from sys import version_info
 from contextlib import contextmanager
-from scell.core import select, Monitored
+from scell.core import select, Monitored, Event
 
 
 class Selector(dict):
@@ -28,7 +28,11 @@ class Selector(dict):
         :param mode: Whether read and or write-ready
             events should be notified.
         """
-        monitor = Monitored(fp, mode)
+        monitor = Monitored(
+            fp,
+            wants_read='r' in mode,
+            wants_write='w' in mode,
+        )
         self[fp] = monitor
         return monitor
 
@@ -37,7 +41,6 @@ class Selector(dict):
     registered = property(dict.items if version_info[0] == 3 else
                           dict.iteritems)
 
-    @property
     def rwlist(self):
         """
         Returns ``(rl, wl)`` where ``rl`` and ``wl``
@@ -63,28 +66,26 @@ class Selector(dict):
             ``None`` or to select the monitors which
             are ready, use ``0``.
         """
-        rl, wl = select(*self.rwlist, timeout=timeout)
+        rl, wl = select(*self.rwlist(), timeout=timeout)
         rl, wl = set(rl), set(wl)
-        result = []
 
         for fp, mon in self.registered:
-            r_ok = mon.readable = fp in rl
-            w_ok = mon.writable = fp in wl
+            r_ok = fp in rl
+            w_ok = fp in wl
 
             if r_ok or w_ok:
-                result.append(mon)
+                yield Event(monitored=mon,
+                            readable=r_ok,
+                            writable=w_ok)
 
-        return result
-
-    @property
     def ready(self):
         """
         Yields the registered monitors which are ready
         (their interests are satisfied).
         """
-        for fp, mon in self.registered:
-            if mon.ready:
-                yield mon
+        for event in self.select():
+            if event.ready:
+                yield event
 
     @contextmanager
     def scoped(self, fps, mode='rw'):
@@ -101,6 +102,5 @@ class Selector(dict):
             yield monitors
         finally:
             for mon in monitors:
-                if mon.fp not in self:
-                    continue
-                self.unregister(mon.fp)
+                if mon.fp in self:
+                    self.unregister(mon.fp)

@@ -1,17 +1,18 @@
+from contextlib import contextmanager
 from scell import Selector
 from pytest import raises
 
 
 def test_select(selector):
-    res = selector.select()
+    res = list(selector.select())
     assert res
-    for monitor in res:
-        assert monitor.ready
+    for event in res:
+        assert event.ready
 
 
 def test_select_empty():
     sel = Selector()
-    assert sel.select() == []
+    assert list(sel.select()) == []
 
 
 def test_unregister(selector):
@@ -36,29 +37,30 @@ def test_callbacks(selector):
 
 
 def test_ready(selector):
-    results = selector.select()
-    ready = list(selector.ready)
-
+    ready = list(selector.ready())
     assert ready
-    assert len(ready) == len(selector)
 
-    for monitor in ready:
-        assert monitor.ready
-        assert monitor in results
+    for event in ready:
+        assert event.ready
 
 
-def test_monitors(handles):
-    s = Selector()
-    with s.scoped(handles) as (m1,m2):
-        s.select()
-        assert m1.ready
-        assert m2.ready
-    assert not s
+class TestScoped:
+    @contextmanager
+    def manager(self, handles):
+        s = Selector()
+        with s.scoped(handles) as r:
+            yield s, r
 
+    def test_peaceful(self, handles):
+        with self.manager(handles) as (s, (m1,m2)):
+            r = s.select()
+            for w in r:
+                assert w.ready
+                assert w.fp in handles
+        assert not s
 
-def test_monitors_exception(handles):
-    s = Selector()
-    with raises(NameError):
-        with s.scoped(handles) as _:
-            raise NameError
-    assert not s
+    def test_exception(self, handles):
+        with raises(NameError):
+            with self.manager(handles) as (s, _):
+                raise NameError
+        assert not s
