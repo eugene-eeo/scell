@@ -4,16 +4,12 @@ from scell import Selector
 from pytest import fixture
 
 
-PLATFORM = platform.system().lower()
-
-
-if 'win' in PLATFORM or 'nt' in PLATFORM:
-    @fixture(autouse=True)
-    def select_no_io(monkeypatch):
-        monkeypatch.setattr(
-            'select.select',
-            lambda rl, wl, xl, timeout=None: (rl, wl, xl),
-        )
+@fixture(autouse=True)
+def select_no_io(monkeypatch):
+    monkeypatch.setattr(
+        'select.select',
+        lambda rl, wl, xl, timeout=None: (rl, wl, xl),
+    )
 
 
 @fixture
