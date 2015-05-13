@@ -15,10 +15,7 @@ library/server::
     >>> selector = scell.Selector()
     >>> monitor = selector.register(open('file.txt'), mode='r')
     >>> monitor.callback = lambda: 1
-    >>> ready = selector.select()
-    >>> monitor.readable
-    True
-    >>> [m.callback() for m in ready]
+    >>> [event.callback() for event in selector.ready]
     [1]
 
 Scell allows implementors to effortlessly build libraries

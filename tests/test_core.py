@@ -1,5 +1,5 @@
-from pytest import mark
-from scell.core import select, Monitored
+from pytest import mark, fixture
+from scell.core import select, Monitored, Event
 
 
 def test_select(handles):
@@ -8,43 +8,29 @@ def test_select(handles):
     assert select(handles, handles) == (handles, handles)
 
 
-def test_monitored(handle, mode):
-    monitor = Monitored(handle, mode)
-    assert monitor.mode == mode
-    assert monitor.callback() is None
+@fixture
+def monitored():
+    return Monitored(None,
+                     wants_read=True,
+                     wants_write=True)
 
 
-@mark.parametrize('fmode,ok', [
-    ('r', (1, 0)),
-    ('w', (0, 1)),
-    ('rw', (1, 1)),
+def test_monitored_default_callback(monitored):
+    assert monitored.callback() is None
+
+
+@mark.parametrize('changes,ok', [
+    ((1,0), False),
+    ((0,1), False),
+    ((0,0), False),
+    ((1,1), True),
 ])
-def test_monitored_mode(handle, fmode, ok, possible):
-    monitor = Monitored(handle, '')
-    for r, w in possible:
-        monitor.wants_read = r
-        monitor.wants_write = w
-
-        if (r, w) == ok:
-            assert monitor.mode == fmode
-            continue
-
-        assert monitor.mode != fmode
+def test_event_ready(monitored, changes, ok):
+    event = Event(monitored, *changes)
+    assert event.ready == ok
 
 
-@mark.parametrize('fmode,ok', [
-    ('r', [(1, 0), (1, 1)]),
-    ('w', [(0, 1), (1, 1)]),
-    ('rw', [(1, 1)]),
-])
-def test_monitored_ready(handle, fmode, ok, possible):
-    monitor = Monitored(handle, fmode)
-    for r, w in possible:
-        monitor.readable = r
-        monitor.writable = w
-
-        if (r, w) in ok:
-            assert monitor.ready
-            continue
-
-        assert not monitor.ready
+def test_event_attrs(monitored):
+    event = Event(monitored, 1, 1)
+    assert event.fp is monitored.fp
+    assert event.callback is monitored.callback
