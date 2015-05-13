@@ -69,20 +69,15 @@ class Selector(dict):
         """
         rl, wl = select(*self.rwlist, timeout=timeout)
         rl, wl = set(rl), set(wl)
-        result = []
 
         for fp, mon in self.registered:
             r_ok = fp in rl
             w_ok = fp in wl
 
             if r_ok or w_ok:
-                result.append(Event(
-                    monitored=mon,
-                    readable=r_ok,
-                    writable=w_ok,
-                ))
-
-        return result
+                yield Event(monitored=mon,
+                            readable=r_ok,
+                            writable=w_ok)
 
     @property
     def ready(self):

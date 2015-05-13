@@ -52,7 +52,7 @@ class Event(object):
         self.readable = readable
         self.writable = writable
 
-        # convenience methods
+        # convenience attributes
         self.fp = monitored.fp
         self.callback = monitored.callback
 

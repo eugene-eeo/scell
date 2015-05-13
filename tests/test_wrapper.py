@@ -4,7 +4,7 @@ from pytest import raises
 
 
 def test_select(selector):
-    res = selector.select()
+    res = list(selector.select())
     assert res
     for event in res:
         assert event.ready
@@ -12,7 +12,7 @@ def test_select(selector):
 
 def test_select_empty():
     sel = Selector()
-    assert sel.select() == []
+    assert list(sel.select()) == []
 
 
 def test_unregister(selector):
