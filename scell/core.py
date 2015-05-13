@@ -38,35 +38,27 @@ class Monitored(object):
         respectively.
     """
 
-    readable = 0
-    writable = 0
     callback = staticmethod(lambda: None)
 
-    def __init__(self, fp, mode):
+    def __init__(self, fp, wants_read, wants_write):
         self.fp = fp
-        self.wants_read = int('r' in mode)
-        self.wants_write = int('w' in mode)
+        self.wants_read = wants_read
+        self.wants_write = wants_write
 
-    @property
-    def mode(self):
-        """
-        Returns the mode as a string, taking into
-        account any changes that might be made on
-        the object's interests.
-        """
-        return ''.join((
-            'r' if self.wants_read else '',
-            'w' if self.wants_write else '',
-            ))
+
+class Event(object):
+    def __init__(self, monitored, readable, writable):
+        self.monitored = monitored
+        self.readable = readable
+        self.writable = writable
+
+        # convenience methods
+        self.fp = monitored.fp
+        self.callback = monitored.callback
 
     @property
     def ready(self):
-        """
-        Tells whether the monitor object is ready
-        or not- whether it's readability and
-        writability interests are met.
-        """
         return (
-            self.readable >= self.wants_read and
-            self.writable >= self.wants_write
-            )
+            self.readable >= self.monitored.wants_read and
+            self.writable >= self.monitored.wants_write
+        )

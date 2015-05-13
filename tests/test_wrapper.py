@@ -6,8 +6,8 @@ from pytest import raises
 def test_select(selector):
     res = selector.select()
     assert res
-    for monitor in res:
-        assert monitor.ready
+    for event in res:
+        assert event.ready
 
 
 def test_select_empty():
@@ -37,15 +37,11 @@ def test_callbacks(selector):
 
 
 def test_ready(selector):
-    results = selector.select()
     ready = list(selector.ready)
-
     assert ready
-    assert len(ready) == len(selector)
 
-    for monitor in ready:
-        assert monitor.ready
-        assert monitor in results
+    for event in ready:
+        assert event.ready
 
 
 class TestScoped:
@@ -57,9 +53,10 @@ class TestScoped:
 
     def test_peaceful(self, handles):
         with self.manager(handles) as (s, (m1,m2)):
-            s.select()
-            assert m1.ready
-            assert m2.ready
+            r = s.select()
+            for w in r:
+                assert w.ready
+                assert w.fp in handles
         assert not s
 
     def test_exception(self, handles):

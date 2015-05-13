@@ -9,7 +9,7 @@
 
 from sys import version_info
 from contextlib import contextmanager
-from scell.core import select, Monitored
+from scell.core import select, Monitored, Event
 
 
 class Selector(dict):
@@ -28,7 +28,11 @@ class Selector(dict):
         :param mode: Whether read and or write-ready
             events should be notified.
         """
-        monitor = Monitored(fp, mode)
+        monitor = Monitored(
+            fp,
+            wants_read='r' in mode,
+            wants_write='w' in mode,
+        )
         self[fp] = monitor
         return monitor
 
@@ -68,11 +72,15 @@ class Selector(dict):
         result = []
 
         for fp, mon in self.registered:
-            r_ok = mon.readable = fp in rl
-            w_ok = mon.writable = fp in wl
+            r_ok = fp in rl
+            w_ok = fp in wl
 
             if r_ok or w_ok:
-                result.append(mon)
+                result.append(Event(
+                    monitored=mon,
+                    readable=r_ok,
+                    writable=w_ok,
+                ))
 
         return result
 
@@ -82,9 +90,9 @@ class Selector(dict):
         Yields the registered monitors which are ready
         (their interests are satisfied).
         """
-        for fp, mon in self.registered:
-            if mon.ready:
-                yield mon
+        for event in self.select():
+            if event.ready:
+                yield event
 
     @contextmanager
     def scoped(self, fps, mode='rw'):
