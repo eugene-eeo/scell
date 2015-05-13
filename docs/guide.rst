@@ -5,161 +5,107 @@ Scell is a very simple library that is comprised of two
 main components- the core library, which implements
 wrappers around monitored file objects and the :func:`select.select`
 function, and the wrapper which implements a :class:`scell.wrapper.Selector`
-object atop a dictionary.
+object atop a dictionary. To get started with the rest
+of the guide first create a :class:`scell.wrapper.Selector`
+instance:
+
+.. code-block:: python
+
+    selector = Selector()
 
 
 Registering File Objects
 ------------------------
 
-To instantiate the **Selector** object just call the
-class without any arguments. You can then register
-file objects onto the instance::
-
-    >>> from scell import Selector
-    >>> selector = Selector()
-    >>> mon = selector.register(open('file.txt'), mode='r')
-
-A :class:`scell.core.Monitored` object will be returned,
-which encapsulates a registered (monitored) file object,
-and it's interests and readiness. For example if you want
-to check if a monitored object is readable or writable,
-and whether it is interested in readability and writability
-you can do::
-
-    >>> mon.readable
-    False
-    >>> mon.writable
-    False
-    >>> mon.wants_read
-    True
-    >>> mon.wants_write
-    False
-
-With those four attributes, you can judge whether a
-monitored object is *ready* by comparison. Alternatively
-you can use the calculated, dynamic properties::
-
-    >>> mon.ready
-    False
-    >>> mon.mode
-    'r'
-
-
-Iteration
-#########
-
-You can get an iterable of file object and monitored
-objects with the :attr:`scell.wrapper.Selector.registered`
-property:
+The recommended way to register file objects for their
+interests is using the :func:`scell.wrapper.Selector.scoped`
+context manager:
 
 .. code-block:: python
 
-    for fp, mon in selector.registered:
-        # do something
+    with selector.scoped([fp1, fp2]) as (m1, m2):
+        pass
 
-.. WARNING::
-   You cannot modify the selector object (which is
-   a dictionary subclass) while iterating over the
-   ``registered`` property.
-
-
-Getting Monitored Objects
-#########################
-
-Since it's not practical and would be unintuitive for the
-user to have to store every monitor object, to query for
-a monitor given a file handle, use the ``info`` method:
+Within the body of the ``with`` block, the file objects
+are registered but once the block exits the selector
+automatically unregisters them. This ensures that file
+objects are automatically cleaned up and that unneeded
+resources can be freed. You can also use the alternative
+forms:
 
 .. code-block:: python
 
-    selector.info(fp)
+    # more verbose but more control
+    from scell.core import Monitored
+    selector[fp] = Monitored(
+        fp,
+        wants_read=True,
+        wants_write=True,
+    )
 
+    # easier but less control
+    selector.register(fp, mode='rw')
 
-Waiting for IO Events
----------------------
-
-Call the :meth:`scell.wrapper.Selector.select` method on
-the selector object to get a list of monitored objects
-which are ready for either read or write (though they may
-not necessarily be *ready*, that is that their interests
-may not be fulfilled)::
-
-    >>> selector.select()
-    [<scell.core.Monitored object at 0x...>]
-
-You can also pass a value to the method to specify the
-timeout. For example, to select the file objects which
-are immediately ready, use ``0``, to block for an
-indefinite time use ``None``::
-
-    selector.select(0)
-    selector.select(None)
-
-To get a list of monitored objects which are *ready*,
-use the :attr:`scell.wrapper.Selector.ready` property,
-for example::
-
-    >>> list(selector.ready)
-    [<scell.core.Monitored object at 0x...>]
-
-.. WARNING::
-   You cannot modify the selector object while iterating
-   over the ``ready`` property. This is because internally
-   this depends on ``registered``.
-
-Callbacks
-#########
-
-Callbacks can be easily implemented using the ``callback``
-attribute of monitored objects. However scell will not
-call the callbacks directly. It is up to the user code
-to decide when and where to call them:
+You can also attach callbacks or other form of data
+alongside the registered file object:
 
 .. code-block:: python
 
-    for mon in selector.values():
-        mon.callback = lambda: 1
-
-    [mon.callback() for mon in selector.ready]
+    monitor = selector.register(fp, mode='rw')
+    monitor.callback = lambda x: x
 
 
-Unregistering File Objects
---------------------------
-
-Once you are done monitoring a file object, you will
-typically want to un-register it from the selector
-object. To do that use the :meth:`scell.wrapper.Selector.unregister`
-method, for example:
-
-.. code-block:: python
-
-    for mon in selector.handles:
-        selector.unregister(mon)
-
-
-Scoped Monitors
+Querying Events
 ---------------
 
-You can register interest with a few file objects when
-only within a particular code block, i.e.:
+You can query for readability or writability of each
+file object by simply using the :func:`scell.wrapper.Selector.select`
+method:
 
 .. code-block:: python
 
-    with selector.scoped([fp1,fp2]) as [m1,m2]:
-        # if fp1 and fp2 are both ready
-        selector.select()
-        assert m1.ready and m2.ready
+    for event in selector.select():
+        assert event.readable
+        assert event.writable
 
-    # both are automatically cleaned up afterwards,
-    # even if an exception is raised.
-    assert fp1 not in selector
-    assert fp2 not in selector
-
-By default the ``scoped`` method will register the
-file objects on both read and write activities, you
-may want to change that by passing a ``mode`` argument
-to the method, e.g:
+The ``select`` method returns an iterable of :class:`scell.core.Event`
+objects that represents the readability and writability
+of the monitored file objects. A code example of the
+attributes and what they are:
 
 .. code-block:: python
 
-    selector.scoped([fp1,fp2], mode='r')
+    event.readable     # whether the file object is readable
+    event.writable     # whether the file object is writable
+    event.ready        # whether the monitored meets are met
+    event.fp           # underlying file object
+    event.callback     # callback associated with the file object
+    event.monitored    # monitored interests of file object
+
+To only select file objects which are ready, use the
+:func:`scell.wrapper.Selector.ready` method. For example:
+
+.. code-block:: python
+
+    for event in selector.ready():
+        assert event.ready
+
+
+Cleaning Up
+-----------
+
+Cleaning up after ourselves is important- that is, to
+unregister file objects that have already been closed
+or unregister file objects that we are no longer
+interested in. If you used the :func:`scell.wrapper.Selector.scoped`
+you don't need to unregister any file objects.
+
+To unregister file objects use the :func:`scell.wrapper.Selector.unregister`
+method:
+
+.. code-block:: python
+
+    selector.unregister(fp)
+
+Note that it raises a ``KeyError`` if you unregister
+file objects that are not present.
