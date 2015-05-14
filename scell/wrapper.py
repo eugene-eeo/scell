@@ -96,7 +96,7 @@ class Selector(dict):
         :param mode: Defaults to 'rw', the interests of
             every file handle.
         """
-        monitors = [self.register(fp, mode) for fp in fps]
+        monitors = tuple(self.register(fp, mode) for fp in fps)
         try:
             yield monitors
         finally:
