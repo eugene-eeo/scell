@@ -5,7 +5,7 @@ import scell.core
 
 
 @fixture(autouse=True)
-def no_io(monkeypatch):
+def mock_select(monkeypatch):
     def select(rlist, wlist, xlist, timeout=None):
         return rlist, wlist, xlist
 

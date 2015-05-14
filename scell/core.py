@@ -10,7 +10,7 @@
 from select import select as _select
 
 
-def select(rl, wl, timeout=0):
+def select(rl, wl, timeout=None):
     """
     Returns the file objects ready for reading/writing
     from the read-list (*rl*) and write-list (*wl*),
@@ -43,10 +43,8 @@ class Monitored(object):
 
 class Event(object):
     """
-    Represents the events that happened to a
-    *monitored* file object, and whether the
-    underlying file object is *readable* and
-    or *writable*.
+    Represents the readability or writability
+    of a *monitored* file object.
     """
 
     def __init__(self, monitored, readable, writable):

@@ -51,11 +51,11 @@ class TestScoped:
 
     def test_peaceful(self, sel, handles):
         with sel.scoped(handles) as monitors:
-            r = list(sel.select())
-            assert r
+            r = list(sel.ready())
             for ev in r:
                 assert ev.monitored in monitors
                 assert ev.fp in handles
+            assert r
         assert not sel
 
     def test_exception(self, sel, handles):
