@@ -1,15 +1,16 @@
-import platform
+import select
 from sys import stdout, stderr
 from scell import Selector
 from pytest import fixture
+import scell.core
 
 
 @fixture(autouse=True)
-def select_no_io(monkeypatch):
-    def select(rlist, wlist, xlist, timeout=None):
+def no_io(monkeypatch):
+    def mockreturn(rlist, wlist, xlist, timeout=None):
         return rlist, wlist, xlist
 
-    monkeypatch.setattr('select.select', select)
+    monkeypatch.setattr(scell.core, '_select', mockreturn)
 
 
 @fixture

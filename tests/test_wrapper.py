@@ -47,20 +47,21 @@ def test_ready(selector):
 class TestScoped:
     @contextmanager
     def manager(self, handles):
-        s = Selector()
-        with s.scoped(handles) as r:
-            yield s, r
+        self.selector = Selector()
+        with self.selector.scoped(handles) as r:
+            yield r
 
     def test_peaceful(self, handles):
-        with self.manager(handles) as (s, (m1,m2)):
-            r = s.select()
-            for w in r:
-                assert w.ready
-                assert w.fp in handles
-        assert not s
+        with self.manager(handles) as monitors:
+            r = list(self.selector.select())
+            assert r
+            for ev in r:
+                assert ev.monitored in monitors
+                assert ev.fp in handles
+        assert not self.selector
 
     def test_exception(self, handles):
         with raises(NameError):
-            with self.manager(handles) as (s, _):
+            with self.manager(handles) as _:
                 raise NameError
-        assert not s
+        assert not self.selector
