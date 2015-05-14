@@ -1,6 +1,6 @@
 from contextlib import contextmanager
 from scell import Selector
-from pytest import raises
+from pytest import raises, fixture
 
 
 def test_select(selector):
@@ -45,23 +45,21 @@ def test_ready(selector):
 
 
 class TestScoped:
-    @contextmanager
-    def manager(self, handles):
-        self.selector = Selector()
-        with self.selector.scoped(handles) as r:
-            yield r
+    @fixture
+    def sel(self):
+        return Selector()
 
-    def test_peaceful(self, handles):
-        with self.manager(handles) as monitors:
-            r = list(self.selector.select())
+    def test_peaceful(self, sel, handles):
+        with sel.scoped(handles) as monitors:
+            r = list(sel.select())
             assert r
             for ev in r:
                 assert ev.monitored in monitors
                 assert ev.fp in handles
-        assert not self.selector
+        assert not sel
 
-    def test_exception(self, handles):
+    def test_exception(self, sel, handles):
         with raises(NameError):
-            with self.manager(handles) as _:
+            with sel.scoped(handles) as _:
                 raise NameError
-        assert not self.selector
+        assert not sel
