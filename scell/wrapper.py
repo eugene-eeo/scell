@@ -29,10 +29,10 @@ class Selector(dict):
             events should be notified.
         """
         monitor = Monitored(
-            fp,
+            fp=fp,
             wants_read='r' in mode,
             wants_write='w' in mode,
-        )
+            )
         self[fp] = monitor
         return monitor
 
