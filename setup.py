@@ -17,8 +17,9 @@ class PyTest(TestCommand):
 
 setup(
     name='scell',
-    version='0.3.0',
+    version='0.3.1',
     description='simple wrapper atop select',
+    long_description=open('README.rst').read(),
     license='MIT',
     author='Eugene Eeo',
     author_email='packwolf58@gmail.com',
@@ -41,4 +42,7 @@ setup(
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: MIT License',
     ],
+
+    include_package_data=True,
+    zip_safe=False,
 )
