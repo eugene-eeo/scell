@@ -10,7 +10,7 @@
 from select import select as _select
 
 
-def select(rl, wl, timeout=0):
+def select(rl, wl, timeout=None):
     """
     Returns the file objects ready for reading/writing
     from the read-list (*rl*) and write-list (*wl*),

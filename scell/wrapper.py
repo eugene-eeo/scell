@@ -57,14 +57,13 @@ class Selector(dict):
 
     def select(self, timeout=None):
         """
-        Returns a list of monitors which are readable
-        or writable, i.e. their readability/writability
-        has changed, subject to *timeout*.
+        Returns an iterable of monitors which are readable
+        or writable subject to *timeout*.
 
         :param timeout: Maximum number of seconds to
-            wait. To block for an indefinite time, use
-            ``None`` or to select the monitors which
-            are ready, use ``0``.
+            wait until at least 1 file object is readable or
+            writable. To block for an indefinite time, use
+            ``None``.
         """
         rl, wl = select(*self.rwlist(), timeout=timeout)
         rl, wl = set(rl), set(wl)
