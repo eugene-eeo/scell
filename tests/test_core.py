@@ -10,7 +10,7 @@ def test_select(handles):
 
 @fixture
 def monitored():
-    return Monitored(None,
+    return Monitored(fp=None,
                      wants_read=True,
                      wants_write=True)
 
