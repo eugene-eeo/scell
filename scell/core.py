@@ -43,10 +43,8 @@ class Monitored(object):
 
 class Event(object):
     """
-    Represents the events that happened to a
-    *monitored* file object, and whether the
-    underlying file object is *readable* and
-    or *writable*.
+    Represents the readability or writability
+    of a *monitored* file object.
     """
 
     def __init__(self, monitored, readable, writable):
