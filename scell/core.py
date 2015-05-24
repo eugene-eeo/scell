@@ -8,6 +8,7 @@
 
 
 from select import select as _select
+from collections import namedtuple
 
 
 def select(rl, wl, timeout=None):
@@ -27,17 +28,12 @@ def select(rl, wl, timeout=None):
     return readers, writers
 
 
-class Monitored(object):
+class Monitored(namedtuple('_Monitored', 'fp,wants_read,wants_write,callback')):
     """
     Represents the interests of a file handle *fp*,
     and whether it *wants_read* and or *wants_write*.
     """
-
-    def __init__(self, fp, wants_read, wants_write, callback):
-        self.fp = fp
-        self.wants_read = wants_read
-        self.wants_write = wants_write
-        self.callback = callback
+    pass
 
 
 class Event(object):

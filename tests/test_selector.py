@@ -29,8 +29,6 @@ def test_info(selector):
 
 
 def test_callbacks(selector):
-    for _, mon in selector.registered:
-        mon.callback = lambda: 1
     res = selector.select()
     exp = len(selector)
     assert sum(m.callback() for m in res) == exp

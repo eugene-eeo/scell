@@ -26,5 +26,5 @@ def handles(request):
 def selector(request, handles):
     sel = Selector()
     for fp in handles:
-        sel.register(fp, mode='rw')
+        sel.register(fp, mode='rw', callback=lambda: 1)
     return sel
