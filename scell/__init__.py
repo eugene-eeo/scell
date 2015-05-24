@@ -10,4 +10,4 @@
 """
 
 
-from scell.wrapper import Selector
+from scell.selector import Selector

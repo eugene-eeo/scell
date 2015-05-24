@@ -1,6 +1,6 @@
 """
-    scell.wrapper
-    ~~~~~~~~~~~~~
+    scell.selector
+    ~~~~~~~~~~~~~~
 
     Implements the ``Selector`` class, a high level
     wrapper around ``~select.select``.
