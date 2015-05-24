@@ -13,8 +13,11 @@ Scell handle it for you and focus on building an awesome
 library/server::
 
     >>> selector = scell.Selector()
-    >>> monitor = selector.register(open('file.txt'), mode='r')
-    >>> monitor.callback = lambda: 1
+    >>> monitor = selector.register(
+            open('file.txt'),
+            mode='r',
+            callback=lambda: 1,
+        )
     >>> [event.callback() for event in selector.ready]
     [1]
 
