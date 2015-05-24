@@ -33,12 +33,11 @@ class Monitored(object):
     and whether it *wants_read* and or *wants_write*.
     """
 
-    callback = staticmethod(lambda: None)
-
-    def __init__(self, fp, wants_read, wants_write):
+    def __init__(self, fp, wants_read, wants_write, callback):
         self.fp = fp
         self.wants_read = wants_read
         self.wants_write = wants_write
+        self.callback = callback
 
 
 class Event(object):

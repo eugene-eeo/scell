@@ -12,11 +12,12 @@ def test_select(handles):
 def monitored():
     return Monitored(fp=None,
                      wants_read=True,
-                     wants_write=True)
+                     wants_write=True,
+                     callback=None)
 
 
-def test_monitored_default_callback(monitored):
-    assert monitored.callback() is None
+def test_monitored_callback(monitored):
+    assert monitored.callback is None
 
 
 @mark.parametrize('changes,ok', [
