@@ -31,7 +31,8 @@ def select(rl, wl, timeout=None):
 class Monitored(namedtuple('_Monitored', 'fp,wants_read,wants_write,callback')):
     """
     Represents the interests of a file handle *fp*,
-    and whether it *wants_read* and or *wants_write*.
+    and whether it *wants_read* and or *wants_write*,
+    as well as an attached *callback*.
     """
     pass
 
