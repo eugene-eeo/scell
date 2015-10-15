@@ -54,7 +54,7 @@ class Event(namedtuple('_Event', 'monitored,readable,writable,fp,callback,ready'
             monitored,
             readable,
             writable,
-            monitored.fp,
-            monitored.callback,
-            ready,
+            fp=monitored.fp,
+            callback=monitored.callback,
+            ready=ready,
         )
