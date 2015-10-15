@@ -70,12 +70,12 @@ class Selector(dict):
         rl, wl = select(*self.rwlist(), timeout=timeout)
         rl, wl = set(rl), set(wl)
 
-        for fp, mon in self.registered:
+        for fp in rl.union(wl):
             r_ok = fp in rl
             w_ok = fp in wl
 
             if r_ok or w_ok:
-                yield Event(monitored=mon,
+                yield Event(monitored=self[fp],
                             readable=r_ok,
                             writable=w_ok)
 

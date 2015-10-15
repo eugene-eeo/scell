@@ -42,7 +42,7 @@ def test_ready(selector):
         assert event.ready
 
 
-class TestScoped:
+class TestScoped(object):
     @fixture
     def sel(self):
         return Selector()
