@@ -1,6 +1,6 @@
 """
-    scell.wrapper
-    ~~~~~~~~~~~~~
+    scell.selector
+    ~~~~~~~~~~~~~~
 
     Implements the ``Selector`` class, a high level
     wrapper around ``~select.select``.
@@ -18,7 +18,7 @@ class Selector(dict):
     objects to ``Monitored`` objects.
     """
 
-    def register(self, fp, mode):
+    def register(self, fp, mode, callback=None):
         """
         Register a given *fp* (file handle) under a
         given *mode*. The *mode* can either be ``r``,
@@ -27,11 +27,13 @@ class Selector(dict):
         :param fp: The file-like object.
         :param mode: Whether read and or write-ready
             events should be notified.
+        :param callback: Optionally, attach a callback.
         """
         monitor = Monitored(
             fp=fp,
             wants_read='r' in mode,
             wants_write='w' in mode,
+            callback=callback,
             )
         self[fp] = monitor
         return monitor
@@ -72,10 +74,9 @@ class Selector(dict):
             r_ok = fp in rl
             w_ok = fp in wl
 
-            if r_ok or w_ok:
-                yield Event(monitored=self[fp],
-                            readable=r_ok,
-                            writable=w_ok)
+            yield Event(monitored=self[fp],
+                        readable=r_ok,
+                        writable=w_ok)
 
     def ready(self):
         """
@@ -96,7 +97,7 @@ class Selector(dict):
         :param mode: Defaults to 'rw', the interests of
             every file handle.
         """
-        monitors = [self.register(fp, mode) for fp in fps]
+        monitors = tuple(self.register(fp, mode) for fp in fps)
         try:
             yield monitors
         finally:

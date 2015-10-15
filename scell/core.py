@@ -8,6 +8,7 @@
 
 
 from select import select as _select
+from collections import namedtuple
 
 
 def select(rl, wl, timeout=None):
@@ -27,43 +28,33 @@ def select(rl, wl, timeout=None):
     return readers, writers
 
 
-class Monitored(object):
+class Monitored(namedtuple('_Monitored', 'fp,wants_read,wants_write,callback')):
     """
     Represents the interests of a file handle *fp*,
-    and whether it *wants_read* and or *wants_write*.
+    and whether it *wants_read* and or *wants_write*,
+    as well as an attached *callback*.
     """
-
-    callback = staticmethod(lambda: None)
-
-    def __init__(self, fp, wants_read, wants_write):
-        self.fp = fp
-        self.wants_read = wants_read
-        self.wants_write = wants_write
+    __slots__ = ()
 
 
-class Event(object):
+class Event(namedtuple('_Event', 'monitored,readable,writable,fp,callback,ready')):
     """
     Represents the readability or writability
     of a *monitored* file object.
     """
+    __slots__ = ()
 
-    def __init__(self, monitored, readable, writable):
-        self.monitored = monitored
-        self.readable = readable
-        self.writable = writable
-
-        # convenience attributes
-        self.fp = monitored.fp
-        self.callback = monitored.callback
-
-    @property
-    def ready(self):
-        """
-        Whether the *monitored* needs are met,
-        i.e. whether it is readable or writable,
-        taking it's needs into account.
-        """
-        return (
-            self.readable >= self.monitored.wants_read and
-            self.writable >= self.monitored.wants_write
+    def __new__(cls, monitored, readable, writable):
+        ready = (
+            readable >= monitored.wants_read and
+            writable >= monitored.wants_write
+        )
+        return super(Event, cls).__new__(
+            cls,
+            monitored,
+            readable,
+            writable,
+            fp=monitored.fp,
+            callback=monitored.callback,
+            ready=ready,
         )

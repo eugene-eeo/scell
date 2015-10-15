@@ -6,12 +6,12 @@ python:
     - '3.2'
     - '3.3'
     - '3.4'
+    - '3.5'
     - 'pypy'
     - 'pypy3'
 script: python setup.py test
 os:
     - linux
-    - osx
 deploy:
     provider: pypi
     user: eugene-eeo
