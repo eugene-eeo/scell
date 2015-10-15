@@ -37,18 +37,24 @@ class Monitored(namedtuple('_Monitored', 'fp,wants_read,wants_write,callback')):
     __slots__ = ()
 
 
-class Event(namedtuple('_Event', 'monitored,readable,writable')):
+class Event(namedtuple('_Event', 'monitored,readable,writable,fp,callback,ready')):
     """
     Represents the readability or writability
     of a *monitored* file object.
     """
+    __slots__ = ()
 
     def __new__(cls, monitored, readable, writable):
-        self = super(Event, cls).__new__(cls, monitored, readable, writable)
-        self.fp = monitored.fp
-        self.callback = monitored.callback
-        self.ready = (
+        ready = (
             readable >= monitored.wants_read and
             writable >= monitored.wants_write
         )
-        return self
+        return super(Event, cls).__new__(
+            cls,
+            monitored,
+            readable,
+            writable,
+            monitored.fp,
+            monitored.callback,
+            ready,
+        )
