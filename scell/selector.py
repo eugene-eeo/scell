@@ -74,10 +74,9 @@ class Selector(dict):
             r_ok = fp in rl
             w_ok = fp in wl
 
-            if r_ok or w_ok:
-                yield Event(monitored=self[fp],
-                            readable=r_ok,
-                            writable=w_ok)
+            yield Event(monitored=self[fp],
+                        readable=r_ok,
+                        writable=w_ok)
 
     def ready(self):
         """
