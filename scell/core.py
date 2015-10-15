@@ -37,29 +37,18 @@ class Monitored(namedtuple('_Monitored', 'fp,wants_read,wants_write,callback')):
     __slots__ = ()
 
 
-class Event(object):
+class Event(namedtuple('_Event', 'monitored,readable,writable')):
     """
     Represents the readability or writability
     of a *monitored* file object.
     """
 
-    def __init__(self, monitored, readable, writable):
-        self.monitored = monitored
-        self.readable = readable
-        self.writable = writable
-
-        # convenience attributes
+    def __new__(cls, monitored, readable, writable):
+        self = super(Event, cls).__new__(cls, monitored, readable, writable)
         self.fp = monitored.fp
         self.callback = monitored.callback
-
-    @property
-    def ready(self):
-        """
-        Whether the *monitored* needs are met,
-        i.e. whether it is readable or writable,
-        taking it's needs into account.
-        """
-        return (
-            self.readable >= self.monitored.wants_read and
-            self.writable >= self.monitored.wants_write
+        self.ready = (
+            readable >= monitored.wants_read and
+            writable >= monitored.wants_write
         )
+        return self
