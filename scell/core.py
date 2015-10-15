@@ -34,7 +34,7 @@ class Monitored(namedtuple('_Monitored', 'fp,wants_read,wants_write,callback')):
     and whether it *wants_read* and or *wants_write*,
     as well as an attached *callback*.
     """
-    pass
+    __slots__ = ()
 
 
 class Event(object):
