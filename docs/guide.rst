@@ -41,10 +41,11 @@ forms:
         fp,
         wants_read=True,
         wants_write=True,
+        callback=None,
     )
 
     # easier but less control
-    selector.register(fp, mode='rw')
+    selector.register(fp, mode='rw', callback=None)
 
 You can also attach callbacks or other form of data
 alongside the registered file object:
