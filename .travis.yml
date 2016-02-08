@@ -12,6 +12,7 @@ python:
 script: python setup.py test
 os:
     - linux
+    - osx
 deploy:
     provider: pypi
     user: eugene-eeo
