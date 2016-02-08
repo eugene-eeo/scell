@@ -3,6 +3,11 @@ from scell import Selector
 from pytest import raises, fixture
 
 
+def test_registered(selector):
+    for key, value in selector.registered:
+        assert selector[key] == value
+
+
 def test_select(selector):
     res = list(selector.select())
     assert res
