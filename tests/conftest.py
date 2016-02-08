@@ -7,14 +7,11 @@ import scell.core
 @fixture(autouse=True)
 def mock_select(monkeypatch):
     def select(rlist, wlist, xlist, timeout=None):
+        if not timeout and not rlist and not wlist:
+            raise RuntimeError
         return rlist, wlist, xlist
 
     monkeypatch.setattr(scell.core, '_select', select)
-
-
-@fixture
-def handle(request):
-    return stdout
 
 
 @fixture
