@@ -16,7 +16,7 @@ def monitored():
                      callback=None)
 
 
-def test_monitored_callback(monitored):
+def test_monitored_default_callback(monitored):
     assert monitored.callback is None
 
 
