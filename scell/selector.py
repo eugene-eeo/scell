@@ -11,6 +11,8 @@ from sys import version_info
 from contextlib import contextmanager
 from scell.core import select, Monitored, Event
 
+_IS_PY3 = version_info[0] == 3
+
 
 class Selector(dict):
     """
@@ -40,7 +42,7 @@ class Selector(dict):
 
     info = dict.get
     unregister = dict.__delitem__
-    registered = property(dict.items if version_info[0] == 3 else
+    registered = property(dict.items if _IS_PY3 else
                           dict.iteritems)
 
     def rwlist(self):
