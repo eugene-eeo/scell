@@ -28,7 +28,11 @@ def select(rl, wl, timeout=None):
     return readers, writers
 
 
-class Monitored(namedtuple('_Monitored', 'fp,wants_read,wants_write,callback')):
+_Monitored = namedtuple('Monitored', 'fp,wants_read,wants_write,callback')
+_Event     = namedtuple('Event', 'monitored,readable,writable,fp,callback,ready')
+
+
+class Monitored(_Monitored):
     """
     Represents the interests of a file handle *fp*,
     and whether it *wants_read* and or *wants_write*,
@@ -37,7 +41,7 @@ class Monitored(namedtuple('_Monitored', 'fp,wants_read,wants_write,callback')):
     __slots__ = ()
 
 
-class Event(namedtuple('_Event', 'monitored,readable,writable,fp,callback,ready')):
+class Event(_Event):
     """
     Represents the readability or writability
     of a *monitored* file object.
